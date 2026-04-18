@@ -57,26 +57,24 @@ function _syncDragonUI(){
 
 // ── Init dragon data per session ──
 export function initDragonData(numPlayers, numHoles=18){
-  dragonData.mulligan = Array(numPlayers).fill(null).map(()=>({h1:false,h2:false}));
+  // mulligan[player][hole] = true/false, max 2 ครั้ง/คน
+  dragonData.mulligan = Array(numPlayers).fill(null).map(()=>Array(numHoles).fill(false));
   dragonData.pot = Array(numHoles).fill(null).map(()=>Array(numPlayers).fill(null).map(()=>({water:false,sand:false,putt3:false})));
   dragonData.potTotal = 0;
 }
 
 // ── มูลิแกน ──
-export function mulliganUse(playerIdx, slot, hole){
-  // slot = 1 หรือ 2
-  // หลุม 0 (หลุม 1) ฟรี ไม่เข้ากอง
+export function mulliganUse(playerIdx, hole){
   if(!dragonData.mulligan[playerIdx]) return;
-  const m = dragonData.mulligan[playerIdx];
-  const key = slot===1?'h1':'h2';
-  const otherKey = slot===1?'h2':'h1';
-  // slot 2 unlock เมื่อ slot 1 ใช้แล้ว
-  if(slot===2 && !m.h1) return;
-  m[key] = !m[key];
-  if(!m[key] && slot===1){ m.h2 = false; } // ยกเลิก slot1 → reset slot2
-  // คำนวณกองกลาง (หลุม 0 = ฟรี)
-  if(hole > 0 && m[key]){ dragonData.potTotal += 100; }
-  else if(hole > 0 && !m[key]){ dragonData.potTotal -= 100; }
+  // นับครั้งที่ใช้ทั้งหมด
+  const total = dragonData.mulligan[playerIdx].filter(v=>v).length;
+  const cur = dragonData.mulligan[playerIdx][hole];
+  if(!cur && total >= 2) return; // เกิน 2 ครั้ง
+  dragonData.mulligan[playerIdx][hole] = !cur;
+  // หลุม 0 (หลุม 1) ฟรี ไม่เข้ากอง
+  if(hole > 0){
+    dragonData.potTotal += (!cur) ? 100 : -100;
+  }
   _refreshDragonSection(hole);
   _refreshPotSummary();
   autoSave();
@@ -194,26 +192,23 @@ export function renderDragonSection(h){
 
   // มูลิแกน
   html += `<div class="dr-sub-wrap">
-    <div class="dr-sub-title" style="color:var(--dragon)">🏌️ มูลิแกน ${isHole1?'<span style="font-size:9px;color:var(--green)">(หลุม 1 ฟรี!)</span>':'<span style="font-size:9px;color:var(--lbl3)">100฿/ครั้ง · โควต้า 2</span>'}</div>`;
+    <div class="dr-sub-title" style="color:var(--dragon)">🏌️ มูลิแกน ${isHole1?'<span style="font-size:9px;color:var(--green)">(หลุม 1 ฟรี!)</span>':'<span style="font-size:9px;color:var(--lbl3)">100฿/ครั้ง · โควต้า 2/คน</span>'}</div>`;
 
   players.forEach((pl,p)=>{
-    const m = dragonData.mulligan[p] || {h1:false,h2:false};
+    const mulArr = dragonData.mulligan[p] || [];
+    const usedHere = mulArr[hole] || false;
+    const totalUsed = mulArr.filter(v=>v).length;
+    const maxReached = !usedHere && totalUsed >= 2;
     const pColor = _playerColor(p);
     const sn = _sn(pl.name);
-    const slot2Dis = !m.h1;
     html += `<div class="dr-mul-row">
       <div class="dr-pname" style="color:${pColor}">${sn}</div>
-      <div style="display:flex;gap:3px;flex:1">
-        <button class="dr-mul-btn${m.h1?' used':''}" onclick="drMulUse(${hole},${p},1)">
-          ${m.h1?'ครั้ง 1 ✓':'ครั้ง 1'}${m.h1&&!isHole1?' 100฿':''}
-        </button>
-        <button class="dr-mul-btn${m.h2?' used':''} ${slot2Dis?'dr-dis':''}"
-          onclick="drMulUse(${hole},${p},2)" ${slot2Dis?'disabled':''}>
-          ${m.h2?'ครั้ง 2 ✓':'ครั้ง 2'}${m.h2&&!isHole1?' 100฿':''}
-        </button>
-      </div>
-      <div class="dr-mul-cnt" style="${(m.h1||m.h2)?'background:rgba(255,107,43,0.3)':'background:rgba(255,255,255,0.05);color:var(--lbl3)'}">
-        ${(m.h1?1:0)+(m.h2?1:0)}
+      <button class="dr-mul-btn${usedHere?' used':''} ${maxReached?'dr-dis':''}"
+        onclick="drMulUse(${hole},${p})" ${maxReached?'disabled':''} style="flex:1">
+        ${usedHere?'✓ ใช้แล้ว'+(hole>0?' 100฿':'(ฟรี)'):'กดใช้มูลิแกน'}
+      </button>
+      <div class="dr-mul-cnt" style="${totalUsed>0?'background:rgba(255,107,43,0.3)':'background:rgba(255,255,255,0.05);color:var(--lbl3)'}">
+        ${totalUsed}/2
       </div>
     </div>`;
   });
@@ -313,9 +308,9 @@ export function buildDragonPotHTML(playersList, scoresList, parsList){
       const d = s - parsList[h];
       if(d<=-1){ birdie += isDouble(h)?200:100; }
     });
-    // มูลิแกน (หลุม 1 = ฟรี, หลุม 2-18 = 100)
-    // นับจาก potTotal ที่ track ไว้แล้ว — ใช้ mulligan array
-    const m = dragonData.mulligan[p]||{h1:false,h2:false};
+     // มูลิแกน — per hole, หลุม 0 ฟรี
+     const mulArr = dragonData.mulligan[p]||[];
+     mulArr.forEach((used,h)=>{ if(used && h>0) mul+=100; });
     // ไม่รู้ว่า mulligan ใช้ที่หลุมไหน แต่นับจำนวน
     // h1=ครั้งแรก h2=ครั้งสอง — หลุม 1 ฟรี ต้องตรวจ
     // simplified: นับจาก potTotal contribution
@@ -389,5 +384,5 @@ export function buildDragonPotHTML(playersList, scoresList, parsList){
 }
 
 // ── Expose to window ──
-window.drMulUse = (h,p,slot) => { mulliganUse(p, slot, h); };
+window.drMulUse = (h,p) => { mulliganUse(p, h); };
 window.drPotToggle = (h,p,type) => { potToggle(h, p, type); };

@@ -156,6 +156,20 @@ export function calcTeamHoleH2H(h){
 export function calcFarNearHole(h){
   const m=Array(players.length).fill(0);if(!G.farNear.on||pars[h]!==3)return m;
   const d=farNearData[h],r=G.farNear.val;if(!d)return m;
+  // Dragon Far — ออนไกลสุด 1 คน คำนวณจากสกอร์
+  if(G.dragon&&G.dragon.on){
+    if(d.solo===null)return m;
+    const p=d.solo,s=scores[p][h];
+    if(s===null)return m;
+    const pt=3*r; // 3pt × 20฿ = 60฿/คน
+    if(s<=pars[h]){ // เก็บพาร์ได้ → ได้เงิน
+      players.forEach((_,i)=>{if(i!==p){m[i]-=pt;m[p]+=pt;}});
+    } else { // เกินพาร์ → Reverse
+      players.forEach((_,i)=>{if(i!==p){m[i]+=pt;m[p]-=pt;}});
+    }
+    return m;
+  }
+  // GolfMate เดิม
   if(d.mode==='solo'&&d.solo!==null){
     const p=d.solo;
     if(d.soloSank1==='sank')players.forEach((_,i)=>{if(i!==p){m[i]-=2*r;m[p]+=2*r;}});
@@ -267,6 +281,30 @@ export function fnSelectPlayer(h,role,v){
 }
 export function fnRenderHole(h){
   const d=farNearData[h],ui=document.getElementById(`fn-ui-${h}`);if(!ui)return;
+  // Dragon Far — ซ่อน mode select, แสดงแค่ dropdown ออนไกลสุด
+  if(G.dragon&&G.dragon.on){
+    const modeEl=document.getElementById(`fn-mode-${h}`);
+    if(modeEl) modeEl.style.display='none';
+    // บังคับ mode = solo เพื่อใช้ d.solo field
+    if(d.mode!=='solo') Object.assign(d,{mode:'solo',solo:null});
+    const opts=`<option value="">-เลือก-</option>`+players.map((p,i)=>`<option value="${i}">${p.name}</option>`).join('');
+    const sel=opts.replace(`value="${d.solo}"`,`value="${d.solo}" selected`);
+    const rowStyle=`display:flex;align-items:center;gap:6px;padding:7px 0`;
+    const lblStyle=`color:var(--teal);font-size:13px;width:80px;flex-shrink:0`;
+    const selStyle=`flex:1;padding:7px 10px;font-size:13px;border-radius:8px;background:var(--bg4);border:none;color:var(--lbl);font-family:inherit`;
+    // แสดงผลคำนวณ
+    let resultTxt='';
+    if(d.solo!==null){
+      const s=scores[d.solo]?.[h],par=pars[h];
+      if(s!==null){
+        const r=G.farNear.val,pt=3*r;
+        if(s<=par) resultTxt=`<div style="margin-top:5px;background:rgba(48,209,88,0.1);border-radius:7px;padding:5px 10px;font-size:11px;font-weight:700;color:var(--green)">✅ ${players[d.solo].name} เก็บพาร์ → ได้ ${pt}฿/คน</div>`;
+        else resultTxt=`<div style="margin-top:5px;background:rgba(255,69,58,0.1);border-radius:7px;padding:5px 10px;font-size:11px;font-weight:700;color:var(--red)">🔄 Reverse → ${players[d.solo].name} จ่าย ${pt}฿/คน</div>`;
+      }
+    }
+    ui.innerHTML=`<div style="${rowStyle}"><span style="${lblStyle}">📍 ออนไกลสุด</span><select onchange="fnSelectPlayer(${h},'solo',this.value)" style="${selStyle}">${sel}</select></div>${resultTxt}`;
+    return;
+  }
   document.getElementById(`fn-mode-${h}`).value=d.mode;
   const opts=`<option value="">-เลือก-</option>`+players.map((p,i)=>`<option value="${i}">${p.name}</option>`).join('');
   const rowStyle=`display:flex;align-items:center;gap:6px;padding:7px 0;border-bottom:0.5px solid var(--sep)`;
