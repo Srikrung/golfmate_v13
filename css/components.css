@@ -1,0 +1,279 @@
+/* ============================================================
+   components.css — Form inputs, Hole card, Score rows,
+                    Sum bar, Rank cards, Money cards, Tables
+   ============================================================ */
+
+/* ── iOS TOGGLE ── */
+.sw{width:44px;height:26px;background:var(--bg4);border-radius:13px;flex-shrink:0;position:relative;transition:background .2s;cursor:pointer}
+.sw.on{background:var(--green)}
+.sw::after{content:'';position:absolute;top:2px;left:2px;width:22px;height:22px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 4px rgba(0,0,0,0.45)}
+.sw.on::after{transform:translateX(18px)}
+
+/* ── FORM INPUTS ── */
+input[type=text],input[type=number],input[type=date],select{
+  background:var(--bg3);border:1px solid var(--bg4);border-radius:10px;color:var(--lbl);
+  padding:11px 14px;font-family:inherit;font-size:15px;outline:none;-webkit-appearance:none;width:100%;
+}
+input[type=number]{width:72px;text-align:center;border:1.5px solid var(--blue);background:rgba(10,132,255,0.1);color:var(--lbl)}
+input:focus,select:focus{border-color:var(--blue)}
+.inp-row{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+
+/* ── PAR GRID ── */
+.par-grid{display:grid;grid-template-columns:repeat(9,1fr);gap:4px;margin-bottom:6px}
+.par-hole{text-align:center;min-width:0}
+.par-hole-num{font-size:10px;color:var(--lbl2);margin-bottom:2px}
+.par-hole input[type=number]{
+  width:100% !important;
+  min-width:0 !important;
+  text-align:center !important;
+  padding:6px 2px !important;
+  font-size:14px !important;
+  border-radius:6px !important;
+  border:1px solid var(--bg4) !important;
+  background:var(--bg3) !important;
+  color:var(--lbl) !important;
+  box-sizing:border-box !important;
+}
+
+/* ── TEAM ASSIGN ── */
+.ta-row{display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:0.5px solid var(--sep)}
+.ta-row:last-child{border:none}
+.ta-name{flex:1;font-size:15px;font-weight:500;color:var(--lbl)}
+.ta-btns{display:flex;gap:6px}
+.ta-btn{padding:7px 18px;border-radius:8px;border:1.5px solid var(--bg4);cursor:pointer;font-family:inherit;font-size:14px;font-weight:700;background:var(--bg3);color:var(--lbl2);transition:all .15s}
+.ta-btn.on-a{background:rgba(10,132,255,0.2);color:var(--blue);border-color:var(--blue)}
+.ta-btn.on-b{background:rgba(255,69,58,0.18);color:var(--red);border-color:var(--red)}
+.ta-btn.on-c{background:rgba(255,159,10,0.18);color:var(--orange);border-color:var(--orange)}
+
+/* ── HOLE CARD ── */
+.hole-card{background:var(--bg2);border-radius:16px;overflow:hidden;margin-bottom:12px;box-shadow:var(--card-shadow)}
+.hc-top{display:flex;align-items:center;padding:10px 14px;border-bottom:0.5px solid var(--sep);gap:10px}
+.h-badge{width:56px;height:56px;background:var(--blue);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0}
+.h-sm{font-size:9px;font-weight:700;color:var(--lbl2);letter-spacing:0.5px;line-height:1}
+.h-lg{font-size:30px;font-weight:800;color:var(--lbl);line-height:1}
+.h-par{flex:1}
+.h-par-lbl{font-size:12px;color:var(--lbl2);font-weight:600;letter-spacing:1px}
+.h-par-ctrl{display:flex;align-items:center;gap:0;background:var(--bg3);border-radius:24px;overflow:hidden;width:fit-content;margin-top:4px;border:1px solid var(--bg4)}
+.ps-btn{width:34px;height:34px;background:none;border:none;color:var(--blue);font-size:22px;font-weight:300;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ps-val{min-width:34px;text-align:center;font-size:24px;font-weight:800;color:var(--lbl)}
+.hc-pills{display:flex;flex-direction:row;gap:6px;align-items:center;margin-left:auto}
+
+/* ── SCORE ROWS ── */
+.score-rows{display:flex;flex-direction:column}
+.score-row{display:flex;align-items:center;padding:11px 14px;border-bottom:0.5px solid var(--sep);gap:10px;background:var(--hole-row)}
+.score-row:last-child{border:none}
+.s-name{flex:1;display:flex;align-items:center;gap:8px;min-width:0}
+.s-name-text{font-size:19px;font-weight:600;color:var(--lbl);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stepper{display:flex;align-items:center;background:var(--bg3);border-radius:10px;overflow:hidden;flex-shrink:0;border:1px solid var(--bg4)}
+.sb{width:34px;height:38px;background:none;border:none;color:var(--blue);font-size:22px;font-weight:300;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ss{width:0.5px;height:20px;background:var(--sep)}
+.sv{min-width:36px;text-align:center;font-size:19px;font-weight:700;color:var(--lbl)}
+.sv.e{font-size:14px;color:var(--lbl3)}
+.s-badge{font-size:12px;font-weight:700;min-width:44px;text-align:right;flex-shrink:0}
+
+/* ── OLYMPIC ROWS ── */
+.oly-r-row{display:flex;align-items:center;gap:6px;padding:7px 0;border-bottom:0.5px solid var(--sep)}
+.oly-r-row:last-child{border:none}
+.oly-r-name{width:72px;font-size:13px;color:var(--lbl);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.oly-btn{flex:1;padding:7px 0;border-radius:8px;border:none;cursor:pointer;font-family:inherit;font-size:12px;font-weight:600;background:var(--bg4);color:var(--lbl2)}
+
+/* ── SUM BAR ── */
+.sum-bar{background:var(--sum-bg);padding:12px 14px;border-top:0.5px solid var(--sep)}
+.sum-title{font-size:18px;font-weight:700;color:var(--lbl);margin-bottom:8px}
+.sum-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:4px 0}
+.sum-name{font-size:18px;font-weight:600;color:var(--lbl);min-width:80px;flex-shrink:0}
+.sum-amt{font-size:18px;font-weight:800}
+.sum-games{font-size:13px;color:var(--lbl2)}
+
+/* ── RANK CARDS ── */
+.rank-card{background:#0d0d1a;border-radius:14px;padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px;border:0.5px solid var(--sep)}
+body.light .rank-card{background:#fff;border:0.5px solid rgba(0,0,0,0.08);box-shadow:0 1px 3px rgba(0,0,0,0.08)}
+.rank-num{font-size:24px;font-weight:800;color:var(--lbl2);width:40px;flex-shrink:0}
+.rank-name{flex:1;font-size:17px;font-weight:500;color:var(--lbl)}
+.rank-sub{font-size:12px;color:var(--lbl2)}
+.rank-net{font-size:28px;font-weight:800;color:var(--green);flex-shrink:0}
+
+/* ── MONEY CARDS ── */
+.money-card{background:#0a0a14;border-radius:14px;overflow:hidden;margin-bottom:10px;border:0.5px solid rgba(255,255,255,0.08)}
+body.light .money-card{background:#fff;border:0.5px solid rgba(0,0,0,0.08);box-shadow:0 1px 3px rgba(0,0,0,0.08)}
+.mc-hdr{padding:10px 14px;border-bottom:0.5px solid var(--sep)}
+.mc-lbl{font-size:12px;font-weight:600;color:var(--lbl2);text-transform:uppercase;letter-spacing:0.5px}
+.m-row{display:flex;align-items:center;padding:11px 14px;border-bottom:0.5px solid var(--sep)}
+.m-row:last-child{border:none}
+.m-name{flex:1;font-size:15px;color:var(--lbl)}
+.m-amt{font-size:22px;font-weight:800;letter-spacing:-0.5px}
+.mw{color:var(--green)}.ml{color:var(--red)}.mn{color:var(--lbl2)}
+
+/* ── TABLES ── */
+.tbl-wrap{background:#0a0a14;border-radius:12px;overflow:hidden;margin-bottom:10px;border:0.5px solid rgba(255,255,255,0.08)}
+body.light .tbl-wrap{background:#fff;border:0.5px solid rgba(0,0,0,0.08);box-shadow:0 1px 3px rgba(0,0,0,0.08)}
+.tbl-inner{width:100%;border-collapse:collapse;table-layout:fixed}
+.tbl-inner th{font-size:10px;font-weight:600;color:var(--lbl2);text-align:center;padding:7px 2px;background:var(--bg3);border-bottom:0.5px solid var(--sep)}
+.tbl-inner td{text-align:center;border-bottom:0.5px solid var(--sep);padding:0}
+.tbl-inner tr:last-child td{border:none}
+/* tbl-new — ตารางสกอร์ใหม่ มี border ทุกช่อง */
+.tbl-new{width:100%;border-collapse:collapse;table-layout:fixed}
+.tbl-new th,.tbl-new td{text-align:center}
+
+
+/* ══════════════════════════════════
+   CAPSULE UI — score row new
+══════════════════════════════════ */
+
+/* score row */
+.score-row-new{
+  padding:10px 10px 11px;
+  border-bottom:0.5px solid var(--sep);
+  background:var(--row-a);
+  display:flex;flex-direction:column;gap:7px;
+}
+.score-row-new.row-b{background:var(--row-b)}
+.score-row-new:last-child{border:none}
+
+/* stepper ใหญ่ขึ้น */
+.stepper{border-radius:999px!important}
+.sb{width:36px!important;height:36px!important;font-size:21px!important}
+.sv{font-size:19px!important;font-weight:700!important}
+
+/* s-badge ใหญ่ขึ้น */
+.s-badge{border-radius:999px!important;padding:4px 0!important;font-size:11px;font-weight:700}
+
+/* ── OLYMPIC GRID ── */
+.oly-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr 1.2fr;
+  grid-template-rows:auto auto;
+  gap:4px;
+}
+.ob{
+  padding:6px 0;border-radius:999px;
+  border:1px solid var(--bg4);background:var(--bg3);
+  color:var(--lbl2);font-size:11px;font-weight:600;
+  text-align:center;cursor:pointer;font-family:inherit;transition:all .12s;
+}
+.ob.ob-rank{
+  grid-row:1/3;grid-column:3/4;
+  border-radius:10px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:1px;min-height:68px;
+}
+.ob.ob-rank .rn{font-size:18px;font-weight:800;line-height:1;display:block}
+.ob.ob-rank .rl{font-size:10px;color:var(--lbl2);font-weight:500;display:block}
+.ob.ob-dq.ob-on  {background:rgba(255,69,58,0.15); color:var(--red);   border-color:rgba(255,69,58,0.35);font-weight:700}
+.ob.ob-chip.ob-on{background:rgba(255,214,10,0.1);  color:var(--yellow);border-color:rgba(255,214,10,0.28);font-weight:700}
+.ob.ob-rank.ob-on{background:rgba(10,132,255,0.15); color:var(--blue);  border-color:rgba(10,132,255,0.35);font-weight:800}
+.ob.ob-rank.ob-on .rl{color:rgba(10,132,255,0.6)}
+.ob.ob-sank.ob-on{background:rgba(48,209,88,0.14);  color:var(--green); border-color:rgba(48,209,88,0.32);font-weight:700}
+.ob.ob-miss.ob-on{background:rgba(255,69,58,0.13);  color:var(--red);   border-color:rgba(255,69,58,0.3); font-weight:700}
+.ob.ob-dim       {opacity:0.18;pointer-events:none}
+
+/* row-sub: ทีม + เบิ้ล-รี */
+.row-sub{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-top:2px}
+
+/* team badge — แคปซูล ขนาดคงที่ตาม "⚡ Solo" */
+.team-badge{
+  font-size:10px!important;font-weight:700;
+  padding:5px 0;border-radius:999px;cursor:pointer;
+  min-width:64px;        /* กว้างพอสำหรับ "⚡ Solo" ไม่ขยับ */
+  text-align:center;
+  flex-shrink:0;
+}
+
+/* DR inline — แคปซูล */
+.dr-inline{
+  font-size:10px;font-weight:800;padding:5px 9px;
+  border-radius:999px;
+  cursor:pointer;font-family:inherit;
+  border:1.5px solid var(--bg4);
+  background:var(--bg3);color:var(--lbl3);
+}
+.dr-inline.dbl-on{background:rgba(255,215,0,0.25);color:#ffd94d;border-color:rgba(255,215,0,0.7)}
+.dr-inline.re-on {background:rgba(52,209,122,0.25);color:#3ddb8a;border-color:rgba(52,209,122,0.7)}
+.dr-inline.rst   {background:rgba(255,255,255,0.08);color:var(--lbl2);border-color:var(--bg4)}
+
+/* game toggle buttons — แคปซูล */
+[id^="gt-"]{border-radius:999px!important}
+
+/* ══ OLYMPIC compact แคปซูล ══ */
+.obc{
+  flex:1;
+  padding:8px 0;
+  border-radius:999px;
+  border:1.5px solid var(--bg4);
+  cursor:pointer;font-family:inherit;
+  font-size:11px;font-weight:700;
+  background:var(--bg3);
+  color:var(--lbl3);
+  text-align:center;
+  transition:all .15s;
+  white-space:nowrap;
+}
+/* inactive — สีชัดขึ้น อ่านง่าย */
+.obc.ob-chip {border-color:rgba(255,215,0,0.45); color:rgba(255,215,0,0.75); background:rgba(255,215,0,0.07)}
+.obc.ob-dq   {border-color:rgba(255,92,82,0.45);  color:rgba(255,92,82,0.75);  background:rgba(255,92,82,0.07)}
+.obc.ob-rank {border-color:rgba(77,163,255,0.45);  color:rgba(77,163,255,0.75); background:rgba(77,163,255,0.07)}
+.obc.ob-sank {border-color:rgba(52,209,122,0.45);  color:rgba(52,209,122,0.75); background:rgba(52,209,122,0.07)}
+.obc.ob-miss {border-color:rgba(255,92,82,0.35);   color:rgba(255,92,82,0.65);  background:rgba(255,92,82,0.06)}
+
+/* active — สว่างชัดเจน */
+.obc.ob-chip.ob-on{background:rgba(255,215,0,0.25); color:#ffd94d; border-color:rgba(255,215,0,0.8)}
+.obc.ob-dq.ob-on  {background:rgba(255,92,82,0.28); color:#ff6b61; border-color:rgba(255,92,82,0.8)}
+.obc.ob-rank.ob-on{background:rgba(77,163,255,0.25);color:#5cb8ff; border-color:rgba(77,163,255,0.8)}
+.obc.ob-sank.ob-on{background:rgba(52,209,122,0.25);color:#3ddb8a; border-color:rgba(52,209,122,0.8)}
+.obc.ob-miss.ob-on{background:rgba(255,92,82,0.22); color:#ff6b61; border-color:rgba(255,92,82,0.7)}
+.obc.ob-dim       {opacity:0.15;pointer-events:none}
+
+/* ── PILL GROUP: ทีม + เบิ้ล-รี กรอบเดียวกัน ── */
+.pill-group{
+  display:flex;
+  background:var(--bg3);
+  border-radius:999px;
+  border:1.5px solid var(--bg4);
+  padding:3px;
+  gap:3px;
+  margin-top:6px;
+}
+.pg-tb-btn{
+  flex:1.2;
+  padding:6px 0;
+  font-size:11px;font-weight:800;
+  text-align:center;
+  cursor:pointer;border:none;font-family:inherit;
+  border-radius:999px;
+  display:flex;align-items:center;justify-content:center;
+}
+.pg-dr{
+  flex:1;padding:6px 0;
+  font-size:11px;font-weight:700;text-align:center;cursor:pointer;
+  border-radius:999px;border:none;
+  background:transparent;color:var(--lbl2);font-family:inherit;
+}
+.pg-dr.pg-on-dbl{background:rgba(48,209,88,0.2); color:var(--green);font-weight:800}
+.pg-dr.pg-on-re {background:rgba(255,159,10,0.2);color:var(--orange,#ff9f0a);font-weight:800}
+
+/* ============================================================
+   FONT SCALE — ปรับขนาดตัวอักษรและปุ่มทุกส่วน
+   ============================================================ */
+/* ชื่อผู้เล่น */
+.s-name-text{ font-size:calc(18px * var(--fs)) }
+/* สกอร์ + ปุ่ม −/+ */
+.sv{ font-size:calc(19px * var(--fs)) !important; min-width:calc(36px * var(--fs)) }
+.sv.e{ font-size:calc(14px * var(--fs)) !important }
+.sb{ width:calc(34px * var(--fs)) !important; height:calc(38px * var(--fs)) !important; font-size:calc(22px * var(--fs)) !important }
+/* pill group ทีม/เบิ้ล/รี */
+.pg-tb-btn{ font-size:calc(10px * var(--fs)); padding:calc(6px * var(--fs)) 0 }
+.pg-dr{ font-size:calc(11px * var(--fs)); padding:calc(6px * var(--fs)) 0 }
+/* ปุ่มเกม (game toggles) */
+.gt-btn{ font-size:calc(12px * var(--fs)); padding:calc(7px * var(--fs)) calc(10px * var(--fs)) }
+/* DQ / Chip / ลง / ไม่ลง */
+.skip-btn,.down-btn{ font-size:calc(11px * var(--fs)) !important }
+/* Olympic */
+.ob{ font-size:calc(12px * var(--fs)) }
+.ob.ob-rank .rn{ font-size:calc(18px * var(--fs)) }
+/* Srikrung FW/GIR/PUTT */
+.sg-btn{ font-size:calc(12px * var(--fs)) !important }
+/* พาร์ nav */
+#nav-par-val{ font-size:calc(15px * var(--fs)) }
+#nav-hole-num{ font-size:calc(18px * var(--fs)) }
+/* ปุ่มพาร์ทุกคน */
+#nav-par-all{ font-size:calc(13px * var(--fs)) }
