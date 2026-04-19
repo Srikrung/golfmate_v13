@@ -483,19 +483,7 @@ export function updateAddPlayerBtn(){
 // ============================================================
 // SESSION
 // ============================================================
-export function saveDragonState(){
-  try{ localStorage.setItem('golfmate_dragon_v13', JSON.stringify({on:dragonData.on,mulligan:dragonData.mulligan,pot:dragonData.pot,potTotal:dragonData.potTotal})); }catch(e){}
-}
-export function loadDragonState(){
-  try{
-    const d = JSON.parse(localStorage.getItem('golfmate_dragon_v13')||'null');
-    if(!d) return;
-    setDragonOn(d.on||false);
-    if(d.mulligan) dragonData.mulligan.splice(0,dragonData.mulligan.length,...d.mulligan);
-    if(d.pot) dragonData.pot.splice(0,dragonData.pot.length,...d.pot);
-    dragonData.potTotal = d.potTotal||0;
-  }catch(e){}
-}
+// saveDragonState / loadDragonState → see dragon.js
 export function saveSession(){
   if(!isGameStarted()) return;
   try{
