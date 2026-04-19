@@ -237,17 +237,10 @@
       <div id="bite-mult-lbl" style="font-size:11px;font-weight:600;color:var(--lbl2);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px">ตัวคูณ — แก้ค่าได้</div>
       <div style="display:flex;flex-direction:column;gap:6px">
         <div style="display:flex;align-items:center;gap:8px">
-          <span style="font-size:13px;color:var(--lbl2);width:100px">🐦 Birdie</span>
+          <span style="font-size:13px;color:var(--lbl2);width:100px">🏆 HIO</span>
           <span style="font-size:13px;color:var(--lbl2)">×</span>
-          <input type="number" id="bm-val-birdie" value="2" min="1" max="99"
-            onchange="setBiteMult('birdie',+this.value)"
-            style="width:60px;border-radius:8px;padding:6px;text-align:center;font-size:15px;font-weight:700;color:#ffa500;border:1.5px solid rgba(255,159,10,0.5);background:rgba(255,159,10,0.08)">
-        </div>
-        <div style="display:flex;align-items:center;gap:8px">
-          <span style="font-size:13px;color:var(--lbl2);width:100px">🦅 Eagle</span>
-          <span style="font-size:13px;color:var(--lbl2)">×</span>
-          <input type="number" id="bm-val-eagle" value="3" min="1" max="99"
-            onchange="setBiteMult('eagle',+this.value)"
+          <input type="number" id="bm-val-hio" value="10" min="1" max="999"
+            onchange="setBiteMult('hio',+this.value)"
             style="width:60px;border-radius:8px;padding:6px;text-align:center;font-size:15px;font-weight:700;color:#ffa500;border:1.5px solid rgba(255,159,10,0.5);background:rgba(255,159,10,0.08)">
         </div>
         <div style="display:flex;align-items:center;gap:8px">
@@ -258,11 +251,33 @@
             style="width:60px;border-radius:8px;padding:6px;text-align:center;font-size:15px;font-weight:700;color:#ffa500;border:1.5px solid rgba(255,159,10,0.5);background:rgba(255,159,10,0.08)">
         </div>
         <div style="display:flex;align-items:center;gap:8px">
-          <span style="font-size:13px;color:var(--lbl2);width:100px">🏆 HIO</span>
+          <span style="font-size:13px;color:var(--lbl2);width:100px">🦅 Eagle</span>
           <span style="font-size:13px;color:var(--lbl2)">×</span>
-          <input type="number" id="bm-val-hio" value="10" min="1" max="999"
-            onchange="setBiteMult('hio',+this.value)"
+          <input type="number" id="bm-val-eagle" value="3" min="1" max="99"
+            onchange="setBiteMult('eagle',+this.value)"
             style="width:60px;border-radius:8px;padding:6px;text-align:center;font-size:15px;font-weight:700;color:#ffa500;border:1.5px solid rgba(255,159,10,0.5);background:rgba(255,159,10,0.08)">
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="font-size:13px;color:var(--lbl2);width:100px">🐦 Birdie</span>
+          <span style="font-size:13px;color:var(--lbl2)">×</span>
+          <input type="number" id="bm-val-birdie" value="2" min="1" max="99"
+            onchange="setBiteMult('birdie',+this.value)"
+            style="width:60px;border-radius:8px;padding:6px;text-align:center;font-size:15px;font-weight:700;color:#ffa500;border:1.5px solid rgba(255,159,10,0.5);background:rgba(255,159,10,0.08)">
+        </div>
+        <!-- Par / Bogey — Dragon only -->
+        <div id="bm-dragon-extra" style="display:none;margin-top:4px;border-top:0.5px solid var(--sep);padding-top:8px;display:flex;flex-direction:column;gap:6px">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="font-size:13px;color:var(--lbl2);width:100px">⛳ พาร์</span>
+            <span style="font-size:13px;color:var(--lbl2)">×</span>
+            <div style="width:60px;border-radius:8px;padding:6px;text-align:center;font-size:15px;font-weight:700;color:#ffa500;border:1.5px solid rgba(255,107,43,0.4);background:rgba(255,107,43,0.08);opacity:0.6">2</div>
+            <span style="font-size:11px;color:rgba(255,255,255,0.3)">(Dragon ล็อก)</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="font-size:13px;color:var(--lbl2);width:100px">🌳 Bogey+</span>
+            <span style="font-size:13px;color:var(--lbl2)">×</span>
+            <div style="width:60px;border-radius:8px;padding:6px;text-align:center;font-size:15px;font-weight:700;color:#ffa500;border:1.5px solid rgba(255,107,43,0.4);background:rgba(255,107,43,0.08);opacity:0.6">1</div>
+            <span style="font-size:11px;color:rgba(255,255,255,0.3)">(Dragon ล็อก)</span>
+          </div>
         </div>
       </div>
     </div>
