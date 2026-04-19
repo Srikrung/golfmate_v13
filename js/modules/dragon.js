@@ -126,19 +126,21 @@ export function initDragonData(numPlayers, numHoles=18){
 }
 
 // ── มูลิแกน ──
-// หลุม 0 = ฟรีไม่จำกัด | หลุม 1-17 = max 2 ครั้ง/หลุม × 100฿
+// หลุม 1 = ฟรี 1 ครั้ง | ทั้งเกม = 2 สิทธิ์ paid ใช้หลุมไหนก็ได้ × 100฿
 export function mulliganUse(playerIdx, hole){
-  if(!dragonData.mulligan[playerIdx]) return;
-  const cur = dragonData.mulligan[playerIdx][hole];
+  const m = dragonData.mulligan[playerIdx];
+  if(!m) return;
   if(hole === 0){
-    // หลุม 1 ฟรี toggle
-    dragonData.mulligan[playerIdx][hole] = !cur;
+    m.freeUsed = !m.freeUsed;
   } else {
-    // นับครั้งในหลุมนี้ (true = ใช้แล้ว 1 ครั้ง per slot)
-    // เราเก็บ per slot: mulligan[p][h] = 0,1,2
-    const used = dragonData.mulligan[playerIdx][hole] || 0;
-    if(used >= 2){ dragonData.mulligan[playerIdx][hole] = 0; }
-    else { dragonData.mulligan[playerIdx][hole] = used + 1; }
+    const idx = m.paid.indexOf(hole);
+    if(idx !== -1){
+      m.paid.splice(idx, 1);
+      dragonData.potTotal -= 100;
+    } else if(m.paid.length < 2){
+      m.paid.push(hole);
+      dragonData.potTotal += 100;
+    }
   }
   _refreshDragonSection(hole);
   _refreshPotSummary();
@@ -178,12 +180,9 @@ export function calcPlayerPot(playerIdx){
     if(d<=-1){ birdie += isDouble(h)?200:100; }
   });
 
-  // มูลิแกน (หลุม 0 ฟรี)
-  dragonData.mulligan[p]?.forEach((v,h)=>{
-    if(h===0) return; // ฟรี
-    const cnt = typeof v==='number'? v : (v?1:0);
-    mul += cnt * 100;
-  });
+  // มูลิแกน — 2 สิทธิ์/เกม paid × 100฿
+  const mp = dragonData.mulligan[p]||{paid:[]};
+  mul = (mp.paid||[]).length * 100;
 
   // ตั้งม้า
   const target = G.settamaa?.targets?.[p];
@@ -380,29 +379,34 @@ export function renderDragonSection(h){
   let html = `<div class="dragon-sec-title">🐉 Dragon Golf</div>`;
 
   // มูลิแกน
+  const totalPaidAll = players.reduce((s,_,p)=>{
+    const mp = dragonData.mulligan[p]||{paid:[]};
+    return s + (mp.paid||[]).length;
+  },0); // ใช้แค่ per player
   html += `<div class="dr-sub-wrap">
     <div class="dr-sub-title" style="color:var(--dragon)">🏌️ มูลิแกน ${isHole1
-      ? '<span style="font-size:9px;color:var(--green)">(หลุม 1 ฟรี! ไม่จำกัด)</span>'
-      : '<span style="font-size:9px;color:var(--lbl3)">100฿/ครั้ง · สูงสุด 2 ครั้ง/หลุม</span>'
+      ? '<span style="font-size:9px;color:var(--green)">(หลุม 1 ฟรี 1 ครั้ง)</span>'
+      : '<span style="font-size:9px;color:var(--lbl3)">100฿/ครั้ง · เหลือสิทธิ์ 2 ครั้ง/คน ทั้งเกม</span>'
     }</div>`;
 
   players.forEach((pl,p)=>{
-    const used = isHole1
-      ? (dragonData.mulligan[p]?.[h] ? 1 : 0)
-      : (dragonData.mulligan[p]?.[h] || 0);
+    const m = dragonData.mulligan[p]||{freeUsed:false, paid:[]};
     const clr = pColors[p%pColors.length];
-    const btnLabel = isHole1
-      ? (used ? '✓ ใช้แล้ว (ฟรี)' : 'กดใช้มูลิแกน')
-      : (used===0 ? 'กดใช้' : used===1 ? '1 ครั้ง ✓' : '2 ครั้ง ✓');
-    const maxed = !isHole1 && used>=2;
+    const paidCount = (m.paid||[]).length;
+    const usedHere  = isHole1 ? m.freeUsed : (m.paid||[]).includes(h);
+    const maxed     = !isHole1 && !usedHere && paidCount >= 2;
+    const btnLabel  = isHole1
+      ? (m.freeUsed ? '✓ ใช้แล้ว (ฟรี)' : 'กดใช้มูลิแกน (ฟรี)')
+      : (usedHere   ? `✓ ใช้หลุมนี้แล้ว (100฿)` : maxed ? 'ใช้สิทธิ์ครบแล้ว' : 'กดใช้มูลิแกน (100฿)');
+    const remain = 2 - paidCount;
     html += `<div class="dr-mul-row">
       <div class="dr-pname" style="color:${clr}">${sn(pl.name)}</div>
-      <button class="dr-mul-btn${used>0?' used':''} ${maxed?'dr-dis':''}"
+      <button class="dr-mul-btn${usedHere?' used':''} ${maxed?'dr-dis':''}"
         onclick="drMulUse(${h},${p})" style="flex:1" ${maxed?'disabled':''}>
-        ${btnLabel}${!isHole1&&used>0?' ('+used+'×100฿)':''}
+        ${btnLabel}
       </button>
-      <div class="dr-mul-cnt" style="${used>0?'background:rgba(255,107,43,0.3)':'background:rgba(255,255,255,0.05);color:var(--lbl3)'}">
-        ${isHole1?(used?'✓':'—'):(used+'/2')}
+      <div class="dr-mul-cnt" style="${(usedHere||paidCount>0)?'background:rgba(255,107,43,0.3)':'background:rgba(255,255,255,0.05);color:var(--lbl3)'}">
+        ${isHole1?(m.freeUsed?'✓':'—'):(remain+'เหลือ')}
       </div>
     </div>`;
   });
