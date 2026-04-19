@@ -125,6 +125,17 @@ export function initDragonData(numPlayers, numHoles=18){
   );
 }
 
+// ── Refresh helpers ──
+function _refreshDragonSection(h){
+  renderDragonSection(h);
+  if(typeof updateTotals === 'function') updateTotals();
+  else if(typeof window.updateTotals === 'function') window.updateTotals();
+}
+function _refreshPotSummary(){
+  renderPotSummary();
+}
+
+
 // ── มูลิแกน ──
 // หลุม 1 = ฟรี 1 ครั้ง | ทั้งเกม = 2 สิทธิ์ paid ใช้หลุมไหนก็ได้ × 100฿
 export function mulliganUse(playerIdx, hole){
