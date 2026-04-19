@@ -323,11 +323,58 @@
     <div id="gb-team-dragon" style="display:none;padding:8px 14px 12px;border-bottom:0.5px solid var(--sep);background:rgba(255,107,43,0.04)">
       <div style="font-size:11px;font-weight:700;color:#ff6b2b;margin-bottom:8px">🐉 Dragon — แข่งหาแชมป์เพื่อกำหนดค่าเลี้ยง</div>
       <div style="display:flex;flex-direction:column;gap:5px;font-size:12px;color:rgba(255,255,255,0.65);line-height:1.8">
-        <div>◾ นำ Best 3 สกอร์ของแต่ละทีมมาเปรียบกัน</div>
+        <div>◾ นำ Best 3 สกอร์ของแต่ละทีมมาเปรียบกัน (ทีม 2 คน ใช้ Best 2)</div>
         <div>◾ <span style="color:#ffd700;font-weight:700">อันดับ 1 = 3pt · อันดับ 2 = 2pt · อันดับ 3 = 1pt</span></div>
-        <div>◾ เสมอ = หารแต้มเฉลี่ย</div>
         <div>◾ หลุม 9 และ 18 = <span style="color:#ff9f0a;font-weight:700">Turbo ×2</span></div>
         <div style="color:rgba(255,69,58,0.8)">◾ ไม่มีเงินไหลระหว่างทีม — ใช้กำหนดค่าเลี้ยงเท่านั้น</div>
+      </div>
+      <!-- ตัวอย่างเสมอ -->
+      <div style="margin-top:8px;background:rgba(255,255,255,0.04);border-radius:9px;padding:9px 11px">
+        <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);margin-bottom:6px">ตัวอย่าง กรณีเสมอ</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;text-align:center;margin-bottom:6px">
+          <div style="background:rgba(10,132,255,0.12);border-radius:7px;padding:6px 4px">
+            <div style="font-size:10px;color:var(--blue);font-weight:700">ทีม A</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.6)">Best = พาร์</div>
+          </div>
+          <div style="background:rgba(255,69,58,0.1);border-radius:7px;padding:6px 4px">
+            <div style="font-size:10px;color:#ff453a;font-weight:700">ทีม B</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.6)">Best = พาร์</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.05);border-radius:7px;padding:6px 4px">
+            <div style="font-size:10px;color:rgba(255,255,255,0.4);font-weight:700">ทีม C</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.6)">Best = Bogey</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;text-align:center">
+          <div style="font-size:13px;font-weight:800;color:#ffd700">2.5 pt</div>
+          <div style="font-size:13px;font-weight:800;color:#ffd700">2.5 pt</div>
+          <div style="font-size:13px;font-weight:800;color:rgba(255,255,255,0.4)">1 pt</div>
+        </div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:4px">A เสมอ B → (3+2)÷2 = 2.5pt แต่ละทีม · C ได้ 1pt</div>
+      </div>
+      <!-- ตัวอย่างเสมอ 3 ทีม -->
+      <div style="margin-top:6px;background:rgba(255,255,255,0.04);border-radius:9px;padding:9px 11px">
+        <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);margin-bottom:6px">ตัวอย่าง เสมอกันทั้ง 3 ทีม</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;text-align:center;margin-bottom:6px">
+          <div style="background:rgba(10,132,255,0.12);border-radius:7px;padding:6px 4px">
+            <div style="font-size:10px;color:var(--blue);font-weight:700">ทีม A</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.6)">Best = พาร์</div>
+          </div>
+          <div style="background:rgba(255,69,58,0.1);border-radius:7px;padding:6px 4px">
+            <div style="font-size:10px;color:#ff453a;font-weight:700">ทีม B</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.6)">Best = พาร์</div>
+          </div>
+          <div style="background:rgba(48,209,88,0.1);border-radius:7px;padding:6px 4px">
+            <div style="font-size:10px;color:#30d158;font-weight:700">ทีม C</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.6)">Best = พาร์</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;text-align:center">
+          <div style="font-size:13px;font-weight:800;color:#ffd700">2 pt</div>
+          <div style="font-size:13px;font-weight:800;color:#ffd700">2 pt</div>
+          <div style="font-size:13px;font-weight:800;color:#ffd700">2 pt</div>
+        </div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:4px">A=B=C → (3+2+1)÷3 = 2pt ทุกทีม</div>
       </div>
     </div>
 
