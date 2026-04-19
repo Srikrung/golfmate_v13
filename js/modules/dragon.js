@@ -127,9 +127,9 @@ export function initDragonData(numPlayers, numHoles=18){
 
 // ── Refresh helpers ──
 function _refreshDragonSection(h){
-  renderDragonSection(h);
-  if(typeof updateTotals === 'function') updateTotals();
-  else if(typeof window.updateTotals === 'function') window.updateTotals();
+  const sec = document.getElementById(`dragon-sec-${h}`);
+  if(sec){ sec.classList.add('show'); renderDragonSection(h); }
+  if(typeof window.updateTotals === 'function') window.updateTotals();
 }
 function _refreshPotSummary(){
   renderPotSummary();
@@ -142,7 +142,15 @@ export function mulliganUse(playerIdx, hole){
   const m = dragonData.mulligan[playerIdx];
   if(!m) return;
   if(hole === 0){
-    m.freeUsed = !m.freeUsed;
+    const h0paid = m.paid.includes(0);
+    if(!m.freeUsed){
+      m.freeUsed = true;
+    } else if(!h0paid && m.paid.length < 2){
+      m.paid.push(0); dragonData.potTotal += 100;
+    } else {
+      if(h0paid){ m.paid.splice(m.paid.indexOf(0),1); dragonData.potTotal -= 100; }
+      m.freeUsed = false;
+    }
   } else {
     const idx = m.paid.indexOf(hole);
     if(idx !== -1){
@@ -404,11 +412,18 @@ export function renderDragonSection(h){
     const m = dragonData.mulligan[p]||{freeUsed:false, paid:[]};
     const clr = pColors[p%pColors.length];
     const paidCount = (m.paid||[]).length;
-    const usedHere  = isHole1 ? m.freeUsed : (m.paid||[]).includes(h);
+    const h0paid    = isHole1 && (m.paid||[]).includes(0);
+    const usedHere  = isHole1 ? (m.freeUsed||h0paid) : (m.paid||[]).includes(h);
     const maxed     = !isHole1 && !usedHere && paidCount >= 2;
-    const btnLabel  = isHole1
-      ? (m.freeUsed ? '✓ ใช้แล้ว (ฟรี)' : 'กดใช้มูลิแกน (ฟรี)')
-      : (usedHere   ? `✓ ใช้หลุมนี้แล้ว (100฿)` : maxed ? 'ใช้สิทธิ์ครบแล้ว' : 'กดใช้มูลิแกน (100฿)');
+    // label สั้น
+    let btnLabel;
+    if(isHole1){
+      if(!m.freeUsed)       btnLabel = 'ฟรี';
+      else if(!h0paid)      btnLabel = '✓ฟรี · กดอีก 100฿';
+      else                  btnLabel = '✓ฟรี+100฿ · กดยกเลิก';
+    } else {
+      btnLabel = maxed ? 'เต็ม' : usedHere ? '✓ 100฿' : '100฿';
+    }
     const remain = 2 - paidCount;
     html += `<div class="dr-mul-row">
       <div class="dr-pname" style="color:${clr}">${sn(pl.name)}</div>
@@ -417,7 +432,7 @@ export function renderDragonSection(h){
         ${btnLabel}
       </button>
       <div class="dr-mul-cnt" style="${(usedHere||paidCount>0)?'background:rgba(255,107,43,0.3)':'background:rgba(255,255,255,0.05);color:var(--lbl3)'}">
-        ${isHole1?(m.freeUsed?'✓':'—'):(remain+'เหลือ')}
+        ${isHole1?(m.freeUsed?(h0paid?'2':'1'):'0'):(remain+'เหลือ')}
       </div>
     </div>`;
   });
