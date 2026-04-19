@@ -65,9 +65,21 @@ function _syncDragonUI(){
   const gbBiteDr = document.getElementById('gb-bite-dragon');
   if(gbBite) gbBite.style.display = on ? 'none' : '';
   if(gbBiteDr) gbBiteDr.style.display = on ? 'block' : 'none';
-  // เทอร์โบ note
+  // เทอร์โบ note + ซ่อน grid
   const turboNote = document.getElementById('turbo-dragon-note');
   if(turboNote) turboNote.style.display = on ? 'block' : 'none';
+  const tgFront = document.getElementById('tg-front');
+  const tgBack  = document.getElementById('tg-back');
+  const tgLblF  = document.querySelector('#gb-turbo [data-lbl="front"]');
+  const tgLblB  = document.querySelector('#gb-turbo [data-lbl="back"]');
+  ['tg-front','tg-back'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.style.display = on ? 'none' : '';
+  });
+  // ซ่อน label Front9/Back9
+  document.querySelectorAll('#gb-turbo .turbo-lbl').forEach(el=>{
+    el.style.display = on ? 'none' : '';
+  });
   // ทีม
   const gbTeam = document.getElementById('gb-team');
   const gbTeamDr = document.getElementById('gb-team-dragon');
