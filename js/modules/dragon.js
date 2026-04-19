@@ -56,6 +56,9 @@ function _syncDragonUI(){
   // label
   const multLbl = document.getElementById('bite-mult-lbl');
   if(multLbl) multLbl.textContent = on ? 'ตัวคูณ Dragon (ล็อกตายตัว)' : 'ตัวคูณ — แก้ค่าได้';
+  // show/hide Par+Bogey rows
+  const extraEl = document.getElementById('bm-dragon-extra');
+  if(extraEl) extraEl.style.display = on ? 'flex' : 'none';
   // sub label
   const subLbl = document.getElementById('bite-sub-lbl');
   if(subLbl) subLbl.textContent = on
