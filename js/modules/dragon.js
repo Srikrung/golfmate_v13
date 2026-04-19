@@ -37,6 +37,30 @@ function _syncDragonUI(){
   document.querySelectorAll('.dragon-game-row').forEach(el=>{ el.style.display=on?'flex':'none'; });
   const chipLbl = document.getElementById('dragon-chip-pt');
   if(chipLbl) chipLbl.textContent = on?'8':'7';
+  // Dragon bite mults — lock/unlock
+  const DRAGON_MULTS = {birdie:3,eagle:4,albatross:25,hio:50};
+  const DEFAULT_MULTS = {birdie:2,eagle:3,albatross:5,hio:10};
+  const mults = on ? DRAGON_MULTS : DEFAULT_MULTS;
+  ['birdie','eagle','albatross','hio'].forEach(k=>{
+    const el = document.getElementById(`bm-val-${k}`);
+    if(!el) return;
+    el.value = mults[k];
+    el.disabled = on;
+    el.style.opacity = on ? '0.5' : '1';
+    el.style.cursor = on ? 'not-allowed' : '';
+    if(on) el.style.borderColor = 'rgba(255,107,43,0.4)';
+    else el.style.borderColor = 'rgba(255,159,10,0.5)';
+    // sync G.bite.mults
+    if(window.setBiteMult) setBiteMult(k, mults[k]);
+  });
+  // label
+  const multLbl = document.getElementById('bite-mult-lbl');
+  if(multLbl) multLbl.textContent = on ? 'ตัวคูณ Dragon (ล็อกตายตัว)' : 'ตัวคูณ — แก้ค่าได้';
+  // sub label
+  const subLbl = document.getElementById('bite-sub-lbl');
+  if(subLbl) subLbl.textContent = on
+    ? 'HIO×50 Alb×25 Eagle×4 Birdie×3'
+    : `HIO×${G.bite?.mults?.hio||10} Eagle×${G.bite?.mults?.eagle||3} Birdie×${G.bite?.mults?.birdie||2}`;
   if(on){
     if(!G.bite.on)   { G.bite.on=true;    document.getElementById('sw-bite')?.classList.add('on'); }
     if(!G.olympic.on){ G.olympic.on=true;  document.getElementById('sw-olympic')?.classList.add('on'); }
