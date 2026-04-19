@@ -85,7 +85,10 @@
           </div>
           <div id="dragon-badge" class="off">OFF</div>
         </div>
-        <div id="dragon-sw" onclick="toggleDragon()"></div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <button onclick="showDragonGuide()" style="background:rgba(255,107,43,0.15);border:1px solid rgba(255,107,43,0.35);border-radius:8px;padding:5px 10px;font-size:11px;font-weight:700;color:#ff6b2b;cursor:pointer;font-family:inherit;white-space:nowrap">📖 คู่มือ</button>
+          <div id="dragon-sw" onclick="toggleDragon()"></div>
+        </div>
       </div>
 </div>
 
@@ -1233,5 +1236,142 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script type="module" src="js/app.js"></script>
+
+<!-- Dragon Guide Modal -->
+<div id="dragon-guide-modal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.75);overflow-y:auto;padding:16px">
+  <div style="max-width:420px;margin:0 auto;background:#1c2535;border-radius:18px;border:1px solid rgba(255,107,43,0.25);overflow:hidden">
+    <!-- Header -->
+    <div style="background:linear-gradient(135deg,#2a1208,#1a0a05);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,107,43,0.2)">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:20px">🐉</span>
+        <div>
+          <div style="font-size:15px;font-weight:800;color:#ff6b2b">คู่มือ Dragon Golf</div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.4)">กติกาทุกเกม</div>
+        </div>
+      </div>
+      <button onclick="hideDragonGuide()" style="background:rgba(255,255,255,0.1);border:none;border-radius:50%;width:30px;height:30px;color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center">✕</button>
+    </div>
+    <!-- Content -->
+    <div style="padding:14px 16px;display:flex;flex-direction:column;gap:14px">
+
+      <!-- ภาพรวม -->
+      <div style="background:rgba(255,107,43,0.07);border-radius:12px;padding:12px;border:1px solid rgba(255,107,43,0.15)">
+        <div style="font-size:12px;font-weight:800;color:#ff6b2b;margin-bottom:6px">🐉 ภาพรวม</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.7);line-height:1.8">Dragon Golf รวม 4 เกมพร้อมกันทุกหลุม ได้แก่ หมากัด · Olympic · ทีม · Far พร้อมระบบกองกลางสะสมตลอดรอบ</div>
+      </div>
+
+      <!-- หมากัด -->
+      <div style="background:var(--bg3);border-radius:12px;overflow:hidden;border:1px solid var(--sep)">
+        <div style="background:rgba(10,132,255,0.12);padding:9px 12px;font-size:12px;font-weight:800;color:var(--blue);border-bottom:1px solid var(--sep)">🦴 หมากัด Dragon</div>
+        <div style="padding:10px 12px;font-size:11px;color:rgba(255,255,255,0.7);line-height:1.9">
+          จับคู่ทุกเส้นทุกหลุม ใครตีน้อยกว่าเก็บแต้ม
+          <div style="margin-top:8px;display:grid;grid-template-columns:1fr 1fr;gap:4px">
+            <div style="background:rgba(255,255,255,0.05);border-radius:7px;padding:6px 8px;font-size:11px">🌳 Bogey+ = ×1</div>
+            <div style="background:rgba(255,255,255,0.05);border-radius:7px;padding:6px 8px;font-size:11px">⛳ พาร์ = ×2</div>
+            <div style="background:rgba(48,209,88,0.1);border-radius:7px;padding:6px 8px;font-size:11px;color:#30d158">🐦 Birdie = ×3</div>
+            <div style="background:rgba(10,132,255,0.1);border-radius:7px;padding:6px 8px;font-size:11px;color:#5ac8fa">🦅 Eagle = ×4</div>
+            <div style="background:rgba(255,215,0,0.1);border-radius:7px;padding:6px 8px;font-size:11px;color:#ffd700">🌟 Alb = ×25</div>
+            <div style="background:rgba(191,90,242,0.1);border-radius:7px;padding:6px 8px;font-size:11px;color:#bf5af2">🏆 HIO = ×50</div>
+          </div>
+          <div style="margin-top:8px;font-size:11px;color:rgba(255,255,255,0.4)">• เสมอกัน = ไม่จ่าย · ตัวคูณล็อกตายตัว ปรับไม่ได้</div>
+        </div>
+      </div>
+
+      <!-- Olympic -->
+      <div style="background:var(--bg3);border-radius:12px;overflow:hidden;border:1px solid var(--sep)">
+        <div style="background:rgba(255,215,0,0.1);padding:9px 12px;font-size:12px;font-weight:800;color:#ffd700;border-bottom:1px solid var(--sep)">🏅 Olympic Dragon</div>
+        <div style="padding:10px 12px;font-size:11px;color:rgba(255,255,255,0.7);line-height:1.9">
+          แข่งว่าใคร <b style="color:#fff">พัตเดียวลง</b> ได้บ้าง · ออนไกลกว่าได้แต้มมากกว่า
+          <div style="margin-top:8px;background:rgba(255,255,255,0.04);border-radius:8px;padding:8px 10px;font-size:11px;line-height:2">
+            ◾ แต้มเริ่มต้น (bPt) = 2 + จำนวนคน DQ<br>
+            ◾ ออนใกล้สุด = bPt · ไกลออกทีละคน +1pt<br>
+            ◾ Chip จากนอกกรีน = <b style="color:#ffd700">8pt ทันที</b><br>
+            ◾ DQ (Par+2 ขึ้นไป) = 1pt เท่านั้น<br>
+            ◾ พัตลง = เก็บจากทุกคนที่ไม่ลง<br>
+            ◾ หลายคนลง = สู้กันเองเฉพาะส่วนต่างพ้อย<br>
+            ◾ ไม่มีใครลง = ไม่จ่ายหลุมนั้น
+          </div>
+          <div style="margin-top:8px;display:grid;grid-template-columns:1fr 1fr;gap:4px">
+            <div style="background:rgba(255,255,255,0.05);border-radius:7px;padding:5px 8px;font-size:11px">HIO/Alb ×4</div>
+            <div style="background:rgba(255,255,255,0.05);border-radius:7px;padding:5px 8px;font-size:11px">Eagle ×3</div>
+            <div style="background:rgba(255,255,255,0.05);border-radius:7px;padding:5px 8px;font-size:11px">Birdie ×2</div>
+            <div style="background:rgba(255,255,255,0.05);border-radius:7px;padding:5px 8px;font-size:11px">Par+ ×1</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Far -->
+      <div style="background:var(--bg3);border-radius:12px;overflow:hidden;border:1px solid var(--sep)">
+        <div style="background:rgba(90,200,250,0.1);padding:9px 12px;font-size:12px;font-weight:800;color:#5ac8fa;border-bottom:1px solid var(--sep)">📍 Far Dragon  <span style="font-size:10px;font-weight:400;opacity:.6">(เฉพาะ Par 3)</span></div>
+        <div style="padding:10px 12px;font-size:11px;color:rgba(255,255,255,0.7);line-height:1.9">
+          เกมพาร์ 3 <b style="color:#fff">วันออน</b> (1 ออน 1 พัต) · เลือก 1 คนออนไกลสุด
+          <div style="margin-top:8px;display:flex;flex-direction:column;gap:5px">
+            <div style="background:rgba(48,209,88,0.1);border-radius:8px;padding:7px 10px;font-size:11px;color:#30d158">✅ เก็บพาร์หรือดีกว่า → ได้รับเงินจากทุกคน</div>
+            <div style="background:rgba(255,69,58,0.1);border-radius:8px;padding:7px 10px;font-size:11px;color:#ff453a">🔄 เกินพาร์ → Reverse จ่ายเงินให้ทุกคน</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ทีม -->
+      <div style="background:var(--bg3);border-radius:12px;overflow:hidden;border:1px solid var(--sep)">
+        <div style="background:rgba(48,209,88,0.1);padding:9px 12px;font-size:12px;font-weight:800;color:#30d158;border-bottom:1px solid var(--sep)">👥 ทีม Dragon</div>
+        <div style="padding:10px 12px;font-size:11px;color:rgba(255,255,255,0.7);line-height:1.9">
+          แข่งหาแชมป์เพื่อกำหนด <b style="color:#fff">ค่าเลี้ยง</b> · ไม่มีเงินไหลระหว่างทีม
+          <div style="margin-top:8px;background:rgba(255,255,255,0.04);border-radius:8px;padding:8px 10px;font-size:11px;line-height:2">
+            ◾ นำ Best 3 สกอร์ของแต่ละทีมมาเปรียบกัน<br>
+            ◾ อันดับ 1 = 3pt · อันดับ 2 = 2pt · อันดับ 3 = 1pt<br>
+            ◾ เสมอ = หารแต้มเฉลี่ย<br>
+            ◾ หลุม 9 และ 18 = Turbo ×2
+          </div>
+        </div>
+      </div>
+
+      <!-- กองกลาง -->
+      <div style="background:var(--bg3);border-radius:12px;overflow:hidden;border:1px solid var(--sep)">
+        <div style="background:rgba(255,159,10,0.12);padding:9px 12px;font-size:12px;font-weight:800;color:#ff9f0a;border-bottom:1px solid var(--sep)">🏦 กองกลาง</div>
+        <div style="padding:10px 12px;font-size:11px;color:rgba(255,255,255,0.7);line-height:1.9">
+          <div style="display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:center">
+            <span>💧 น้ำ / ⛱ ทราย / 🏌️ 3พัต</span><span style="color:#ff9f0a;font-weight:700">20฿/หลุม</span>
+            <span>🐦 Birdie/Eagle/Alb/HIO</span><span style="color:#ff9f0a;font-weight:700">100฿ AUTO</span>
+            <span>🏌️ มูลิแกน (หลุม 2-18)</span><span style="color:#ff9f0a;font-weight:700">100฿/ครั้ง</span>
+            <span>🐴 ตั้งม้า (เกินเป้า)</span><span style="color:#ff9f0a;font-weight:700">20฿</span>
+            <span>🐴 ตั้งม้า (ต่ำกว่าเป้า)</span><span style="color:#ff9f0a;font-weight:700">40฿</span>
+          </div>
+          <div style="margin-top:8px;font-size:11px;color:rgba(255,255,255,0.4)">• หลุม 9 และ 18 ×2 · มูลิแกนหลุม 1 ฟรี</div>
+        </div>
+      </div>
+
+      <!-- ค่าเลี้ยง -->
+      <div style="background:var(--bg3);border-radius:12px;overflow:hidden;border:1px solid var(--sep)">
+        <div style="background:rgba(255,215,0,0.1);padding:9px 12px;font-size:12px;font-weight:800;color:#ffd700;border-bottom:1px solid var(--sep)">🍽️ ค่าเลี้ยง</div>
+        <div style="padding:10px 12px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
+          <div style="background:rgba(255,215,0,0.09);border-radius:9px;padding:8px;text-align:center">
+            <div style="font-size:11px;color:#ffd700;font-weight:700">🥇 อันดับ 1</div>
+            <div style="font-size:18px;font-weight:800;color:#ffd700;margin:3px 0">10%</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.4)">จ่ายน้อยสุด</div>
+          </div>
+          <div style="background:rgba(255,159,10,0.09);border-radius:9px;padding:8px;text-align:center">
+            <div style="font-size:11px;color:#ff9f0a;font-weight:700">🥈 อันดับ 2</div>
+            <div style="font-size:18px;font-weight:800;color:#ff9f0a;margin:3px 0">40%</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.4)"></div>
+          </div>
+          <div style="background:rgba(255,69,58,0.09);border-radius:9px;padding:8px;text-align:center">
+            <div style="font-size:11px;color:#ff453a;font-weight:700">🥉 อันดับ 3</div>
+            <div style="font-size:18px;font-weight:800;color:#ff453a;margin:3px 0">50%</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.4)">จ่ายมากสุด</div>
+          </div>
+        </div>
+      </div>
+
+      <button onclick="hideDragonGuide()" style="width:100%;padding:13px;background:#ff6b2b;border:none;border-radius:12px;color:#fff;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit">เข้าใจแล้ว 🐉</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function showDragonGuide(){ document.getElementById('dragon-guide-modal').style.display='block'; document.body.style.overflow='hidden'; }
+function hideDragonGuide(){ document.getElementById('dragon-guide-modal').style.display='none'; document.body.style.overflow=''; }
+document.getElementById('dragon-guide-modal').addEventListener('click', function(e){ if(e.target===this) hideDragonGuide(); });
+</script>
 </body>
 </html>
