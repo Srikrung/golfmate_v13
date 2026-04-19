@@ -282,7 +282,7 @@
       </div>
     </div>
 
-    <div class="row" id="gr-hcap" style="border-top:0.5px solid var(--sep)">
+    <div id="hcap-section"><div class="row" id="gr-hcap" style="border-top:0.5px solid var(--sep)">
       <div class="r-icon" style="background:rgba(191,90,242,0.18)">🎯</div>
       <div class="r-text"><div class="r-title">ต่อแต้ม</div><div class="r-sub" id="hcap-sub-lbl">ต่อลอย / ต่อหลุม — เฉพาะหมากัด</div></div>
       <div class="sw" id="sw-hcap" onclick="toggleSw('hcap')"></div>
@@ -291,7 +291,7 @@
       <div id="hcap-pairs-wrap">
         <div style="font-size:13px;color:var(--lbl2);text-align:center;padding:12px 0">กด "เริ่มบันทึกสกอร์" เพื่อตั้งค่าคู่แต้มต่อครับ</div>
       </div>
-    </div>
+    </div></div><!-- /hcap-section -->
 
     <div class="row" id="gr-turbo">
       <div class="r-icon" style="background:rgba(255,159,10,0.18)">⚡</div>
@@ -299,6 +299,7 @@
       <div class="sw on" id="sw-turbo" onclick="toggleSw('turbo')"></div>
     </div>
     <div id="gb-turbo" style="padding:8px 14px 12px;border-bottom:0.5px solid var(--sep)">
+      <div id="turbo-dragon-note" style="display:none;background:rgba(255,107,43,0.08);border:1px solid rgba(255,107,43,0.2);border-radius:8px;padding:8px 10px;margin-bottom:8px;font-size:12px;color:#ff6b2b">🐉 Dragon: หลุม 9 และ 18 เทอร์โบ ×2 ล็อกตายตัว</div>
       <div style="font-size:11px;color:var(--lbl2);margin-bottom:5px">Front 9</div>
       <div class="t-grid" id="tg-front"></div>
       <div style="font-size:11px;color:var(--lbl2);margin:7px 0 5px">Back 9</div>
@@ -319,6 +320,16 @@
       </div>
       <div style="font-size:11px;color:var(--lbl2);margin-top:8px">⚑ ตั้งทีม A / B บนหน้าสกอร์การ์ด</div>
     </div>
+    <div id="gb-team-dragon" style="display:none;padding:8px 14px 12px;border-bottom:0.5px solid var(--sep);background:rgba(255,107,43,0.04)">
+      <div style="font-size:11px;font-weight:700;color:#ff6b2b;margin-bottom:8px">🐉 Dragon — แข่งหาแชมป์เพื่อกำหนดค่าเลี้ยง</div>
+      <div style="display:flex;flex-direction:column;gap:5px;font-size:12px;color:rgba(255,255,255,0.65);line-height:1.8">
+        <div>◾ นำ Best 3 สกอร์ของแต่ละทีมมาเปรียบกัน</div>
+        <div>◾ <span style="color:#ffd700;font-weight:700">อันดับ 1 = 3pt · อันดับ 2 = 2pt · อันดับ 3 = 1pt</span></div>
+        <div>◾ เสมอ = หารแต้มเฉลี่ย</div>
+        <div>◾ หลุม 9 และ 18 = <span style="color:#ff9f0a;font-weight:700">Turbo ×2</span></div>
+        <div style="color:rgba(255,69,58,0.8)">◾ ไม่มีเงินไหลระหว่างทีม — ใช้กำหนดค่าเลี้ยงเท่านั้น</div>
+      </div>
+    </div>
 
     <div class="row" id="gr-olympic">
       <div class="r-icon" style="background:rgba(10,132,255,0.15)">🏅</div>
@@ -328,6 +339,23 @@
     <div id="gb-olympic" style="display:none;padding:8px 14px 12px;border-bottom:0.5px solid var(--sep)">
       <div style="display:flex;align-items:center;gap:8px"><span style="font-size:13px;color:var(--lbl2)">1 พอยต์ =</span><input type="number" id="gv-olympic" value="20" min="1" style="width:68px;border-radius:8px;padding:7px;text-align:center;font-size:15px"><span style="font-size:13px;color:var(--lbl2)">บาท</span></div>
     </div>
+    <div id="gb-olympic-dragon" style="display:none;padding:8px 14px 12px;border-bottom:0.5px solid var(--sep);background:rgba(255,107,43,0.04)">
+      <div style="font-size:11px;font-weight:700;color:#ff6b2b;margin-bottom:8px">🐉 Dragon — แข่งว่าใครพัตเดียวลงได้</div>
+      <div style="display:flex;flex-direction:column;gap:5px;font-size:12px;color:rgba(255,255,255,0.65);line-height:1.8">
+        <div>◾ ออนไกลกว่า = <span style="color:#ffd700;font-weight:700">แต้มมากกว่า</span></div>
+        <div>◾ แต้มเริ่มต้น = 2 + จำนวนคน DQ · เพิ่มระยะละ 1pt</div>
+        <div>◾ Chip นอกกรีน = <span style="color:#ffd700;font-weight:700">8pt ทันที</span></div>
+        <div>◾ DQ = 1pt เท่านั้น</div>
+        <div>◾ พัตลง → เก็บจากทุกคนที่ไม่ลง</div>
+        <div>◾ หลายคนลง → สู้กันเองเฉพาะส่วนต่างพ้อย</div>
+      </div>
+      <div style="margin-top:8px;display:grid;grid-template-columns:1fr 1fr;gap:6px">
+        <div style="background:rgba(255,255,255,0.05);border-radius:8px;padding:7px;display:flex;justify-content:space-between"><span style="font-size:11px;color:rgba(255,255,255,0.5)">HIO/Alb</span><span style="font-size:13px;font-weight:700;color:#ffa500">×4</span></div>
+        <div style="background:rgba(255,255,255,0.05);border-radius:8px;padding:7px;display:flex;justify-content:space-between"><span style="font-size:11px;color:rgba(255,255,255,0.5)">Eagle</span><span style="font-size:13px;font-weight:700;color:#ffa500">×3</span></div>
+        <div style="background:rgba(255,255,255,0.05);border-radius:8px;padding:7px;display:flex;justify-content:space-between"><span style="font-size:11px;color:rgba(255,255,255,0.5)">Birdie</span><span style="font-size:13px;font-weight:700;color:#ffa500">×2</span></div>
+        <div style="background:rgba(255,255,255,0.05);border-radius:8px;padding:7px;display:flex;justify-content:space-between"><span style="font-size:11px;color:rgba(255,255,255,0.5)">Par+</span><span style="font-size:13px;font-weight:700;color:#ffa500">×1</span></div>
+      </div>
+    </div>
 
     <div class="row" id="gr-farNear">
       <div class="r-icon" style="background:rgba(191,90,242,0.15)">🎯</div>
@@ -336,23 +364,79 @@
     </div>
     <div id="gb-farNear" style="display:none;padding:8px 14px 12px;border-bottom:0.5px solid var(--sep)">
       <div style="display:flex;align-items:center;gap:8px"><span style="font-size:13px;color:var(--lbl2)">1 พอยต์ =</span><input type="number" id="gv-farNear" value="20" min="1" style="width:68px;border-radius:8px;padding:7px;text-align:center;font-size:15px"><span style="font-size:13px;color:var(--lbl2)">บาท</span></div>
-
-      <!-- Dragon Golf Games -->
-      <div class="r-item dragon-game-row" style="border:1px solid rgba(255,107,43,0.2);background:linear-gradient(135deg,rgba(255,107,43,0.06),var(--bg2))">
-        <div class="r-icon" style="background:rgba(255,107,43,0.2)">🏦</div>
-        <div class="r-body">
-          <div class="r-name" style="color:#ff6b2b">กองกลาง</div>
-          <div class="r-sub">น้ำ/ทราย/3พัต · Birdie AUTO · มูลิแกน</div>
-        </div>
-        <div class="r-sw on" style="background:#ff6b2b" id="sw-dragon-pot"></div>
+    </div>
+    <div id="gb-farNear-dragon" style="display:none;padding:8px 14px 12px;border-bottom:0.5px solid var(--sep);background:rgba(255,107,43,0.04)">
+      <div style="font-size:11px;font-weight:700;color:#ff6b2b;margin-bottom:8px">🐉 Dragon Far — Par 3 วันออน</div>
+      <div style="display:flex;flex-direction:column;gap:5px;font-size:12px;color:rgba(255,255,255,0.65);line-height:1.8">
+        <div>◾ เลือก 1 คนออนไกลสุดก่อนพัตต์</div>
+        <div>◾ ระบบเช็คสกอร์อัตโนมัติ</div>
       </div>
-      <div class="r-item dragon-game-row" style="border:1px solid rgba(255,107,43,0.2);background:linear-gradient(135deg,rgba(255,107,43,0.06),var(--bg2))">
-        <div class="r-icon" style="background:rgba(255,215,0,0.15)">🍽️</div>
-        <div class="r-body">
-          <div class="r-name" style="color:var(--gold)">ค่าเลี้ยง</div>
-          <div class="r-sub">อันดับ 1=10% · 2=40% · 3=50%</div>
+      <div style="margin-top:8px;display:flex;flex-direction:column;gap:6px">
+        <div style="background:rgba(48,209,88,0.1);border:1px solid rgba(48,209,88,0.2);border-radius:9px;padding:9px 12px;font-size:12px;color:#30d158">✅ เก็บพาร์หรือดีกว่า → ได้รับเงินจากทุกคน</div>
+        <div style="background:rgba(255,69,58,0.1);border:1px solid rgba(255,69,58,0.2);border-radius:9px;padding:9px 12px;font-size:12px;color:#ff453a">🔄 เกินพาร์ → Reverse จ่ายเงินให้ทุกคน</div>
+      </div>
+      <div style="margin-top:6px;font-size:11px;color:rgba(255,255,255,0.3)">ไม่มี Near · ไม่มีพัตต์ 1/2 · ไม่มี mode select</div>
+    </div>
+
+    <!-- Dragon: กองกลาง + ค่าเลี้ยง -->
+    <div id="dragon-games-section" style="display:none">
+      <div style="padding:10px 14px 6px;font-size:10px;font-weight:700;color:#ff6b2b;text-transform:uppercase;letter-spacing:1.5px;display:flex;align-items:center;gap:6px">
+        <span>🐉 Dragon เพิ่มเติม</span>
+        <div style="flex:1;height:1px;background:rgba(255,107,43,0.2)"></div>
+      </div>
+
+      <!-- กองกลาง -->
+      <div style="margin:0 0 1px;background:var(--bg2);border-top:0.5px solid var(--sep)">
+        <div style="padding:12px 14px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+            <div style="display:flex;align-items:center;gap:8px">
+              <div style="width:32px;height:32px;border-radius:9px;background:rgba(255,107,43,0.2);display:flex;align-items:center;justify-content:center;font-size:16px">🏦</div>
+              <div>
+                <div style="font-size:13px;font-weight:700;color:#ff6b2b">กองกลาง</div>
+                <div style="font-size:10px;color:rgba(255,255,255,0.4)">สะสมตลอดรอบ</div>
+              </div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;font-size:11px">
+            <div style="background:rgba(255,255,255,0.05);border-radius:8px;padding:7px 9px;display:flex;justify-content:space-between"><span style="color:rgba(255,255,255,0.55)">💧 น้ำ</span><span style="color:#ff9f0a;font-weight:700">20฿/หลุม</span></div>
+            <div style="background:rgba(255,255,255,0.05);border-radius:8px;padding:7px 9px;display:flex;justify-content:space-between"><span style="color:rgba(255,255,255,0.55)">⛱ ทราย</span><span style="color:#ff9f0a;font-weight:700">20฿/หลุม</span></div>
+            <div style="background:rgba(255,255,255,0.05);border-radius:8px;padding:7px 9px;display:flex;justify-content:space-between"><span style="color:rgba(255,255,255,0.55)">🏌️ 3พัต</span><span style="color:#ff9f0a;font-weight:700">20฿/หลุม</span></div>
+            <div style="background:rgba(48,209,88,0.08);border-radius:8px;padding:7px 9px;display:flex;justify-content:space-between"><span style="color:rgba(255,255,255,0.55)">🐦 Birdie+</span><span style="color:#30d158;font-weight:700">100฿ AUTO</span></div>
+            <div style="background:rgba(255,255,255,0.05);border-radius:8px;padding:7px 9px;display:flex;justify-content:space-between"><span style="color:rgba(255,255,255,0.55)">🏌️ มูลิแกน</span><span style="color:#ff9f0a;font-weight:700">100฿/ครั้ง</span></div>
+            <div style="background:rgba(255,255,255,0.05);border-radius:8px;padding:7px 9px;display:flex;justify-content:space-between"><span style="color:rgba(255,255,255,0.55)">🐴 ตั้งม้า</span><span style="color:#ff9f0a;font-weight:700">20/40฿</span></div>
+          </div>
+          <div style="margin-top:6px;font-size:10px;color:rgba(255,255,255,0.3)">หลุม 9,18 ×2 · มูลิแกนหลุม 1 ฟรี</div>
         </div>
-        <div class="r-sw on" style="background:var(--gold)" id="sw-dragon-service"></div>
+      </div>
+
+      <!-- ค่าเลี้ยง -->
+      <div style="background:var(--bg2);border-top:0.5px solid var(--sep)">
+        <div style="padding:12px 14px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <div style="width:32px;height:32px;border-radius:9px;background:rgba(255,215,0,0.15);display:flex;align-items:center;justify-content:center;font-size:16px">🍽️</div>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:#ffd700">ค่าเลี้ยง</div>
+              <div style="font-size:10px;color:rgba(255,255,255,0.4)">จากยอดกองกลาง ตามอันดับทีม</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
+            <div style="background:rgba(255,215,0,0.09);border:1px solid rgba(255,215,0,0.2);border-radius:10px;padding:10px 6px;text-align:center">
+              <div style="font-size:11px;font-weight:700;color:#ffd700">🥇 อันดับ 1</div>
+              <div style="font-size:22px;font-weight:800;color:#ffd700;margin:4px 0">10%</div>
+              <div style="font-size:10px;color:rgba(255,255,255,0.3)">จ่ายน้อยสุด</div>
+            </div>
+            <div style="background:rgba(255,159,10,0.09);border:1px solid rgba(255,159,10,0.2);border-radius:10px;padding:10px 6px;text-align:center">
+              <div style="font-size:11px;font-weight:700;color:#ff9f0a">🥈 อันดับ 2</div>
+              <div style="font-size:22px;font-weight:800;color:#ff9f0a;margin:4px 0">40%</div>
+              <div style="font-size:10px;color:rgba(255,255,255,0.3)"></div>
+            </div>
+            <div style="background:rgba(255,69,58,0.09);border:1px solid rgba(255,69,58,0.2);border-radius:10px;padding:10px 6px;text-align:center">
+              <div style="font-size:11px;font-weight:700;color:#ff453a">🥉 อันดับ 3</div>
+              <div style="font-size:22px;font-weight:800;color:#ff453a;margin:4px 0">50%</div>
+              <div style="font-size:10px;color:rgba(255,255,255,0.3)">จ่ายมากสุด</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
