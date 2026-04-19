@@ -360,6 +360,7 @@ function _sgUpdateFocusBtns(focus){
 }
 
 export function newGame(){
+  _lockDragonToggle(false);
   if(confirm('เริ่มเกมใหม่?')){
     setGameStarted(false);
     setPlayers([]); setScores([]); setCurrentHole(0);
@@ -370,7 +371,37 @@ export function newGame(){
 // ============================================================
 // START GAME
 // ============================================================
+
+// ── Lock/Unlock Dragon toggle ──
+function _lockDragonToggle(lock){
+  const sw = document.getElementById('dragon-sw');
+  const btn = document.querySelector('button[onclick="showDragonGuide()"]');
+  if(!sw) return;
+  if(lock){
+    sw.style.pointerEvents = 'none';
+    sw.style.opacity = '0.5';
+    sw.title = 'ไม่สามารถเปลี่ยนโหมด Dragon ระหว่างเล่นได้';
+    // แสดง badge ล็อก
+    let lk = document.getElementById('dragon-lock-lbl');
+    if(!lk){
+      lk = document.createElement('span');
+      lk.id = 'dragon-lock-lbl';
+      lk.style.cssText = 'font-size:9px;color:rgba(255,255,255,0.3);white-space:nowrap';
+      lk.textContent = '🔒 ระหว่างเล่น';
+      sw.parentNode.insertBefore(lk, sw);
+    }
+    lk.style.display = 'inline';
+  } else {
+    sw.style.pointerEvents = '';
+    sw.style.opacity = '';
+    sw.title = '';
+    const lk = document.getElementById('dragon-lock-lbl');
+    if(lk) lk.style.display = 'none';
+  }
+}
 export function startGame(){
+  // lock Dragon toggle
+  _lockDragonToggle(true);
   // เตือนถ้าไม่มี Room Code
   const room = getRoomCode();
   if(!room || room==='DEFAULT'){
@@ -530,6 +561,7 @@ export function loadSession(){
     pars.splice(0, pars.length, ...data.pars);
     setCurrentHole(data.currentHole || 0);
     setGameStarted(data.gameStarted);
+    if(data.gameStarted) _lockDragonToggle(true);
 
     olympicData.splice(0, olympicData.length,
       ...(data.olympicData || Array(18).fill(null).map(() => ({order:[],status:{}}))));
