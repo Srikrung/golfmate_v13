@@ -56,6 +56,37 @@ function _syncDragonUI(){
   // label
   const multLbl = document.getElementById('bite-mult-lbl');
   if(multLbl) multLbl.textContent = on ? 'ตัวคูณ Dragon (ล็อกตายตัว)' : 'ตัวคูณ — แก้ค่าได้';
+  // ── ซ่อน/แสดง sections ตาม Dragon ON/OFF ──
+  // ต่อแต้ม
+  const hcapSec = document.getElementById('hcap-section');
+  if(hcapSec) hcapSec.style.display = on ? 'none' : '';
+  // หมากัด
+  const gbBite = document.getElementById('gb-bite');
+  const gbBiteDr = document.getElementById('gb-bite-dragon');
+  if(gbBite) gbBite.style.display = on ? 'none' : '';
+  if(gbBiteDr) gbBiteDr.style.display = on ? 'block' : 'none';
+  // เทอร์โบ note
+  const turboNote = document.getElementById('turbo-dragon-note');
+  if(turboNote) turboNote.style.display = on ? 'block' : 'none';
+  // ทีม
+  const gbTeam = document.getElementById('gb-team');
+  const gbTeamDr = document.getElementById('gb-team-dragon');
+  if(gbTeam) gbTeam.style.display = on ? 'none' : 'none'; // ทีม default hide อยู่แล้ว
+  if(gbTeamDr) gbTeamDr.style.display = on ? 'block' : 'none';
+  // Olympic
+  const gbOly = document.getElementById('gb-olympic');
+  const gbOlyDr = document.getElementById('gb-olympic-dragon');
+  if(gbOly) gbOly.style.display = on ? 'none' : 'none';
+  if(gbOlyDr) gbOlyDr.style.display = on ? 'block' : 'none';
+  // Far
+  const gbFar = document.getElementById('gb-farNear');
+  const gbFarDr = document.getElementById('gb-farNear-dragon');
+  if(gbFar) gbFar.style.display = on ? 'none' : 'none';
+  if(gbFarDr) gbFarDr.style.display = on ? 'block' : 'none';
+  // กองกลาง + ค่าเลี้ยง
+  const drSec = document.getElementById('dragon-games-section');
+  if(drSec) drSec.style.display = on ? 'block' : 'none';
+
   // show/hide Par+Bogey rows
   const extraEl = document.getElementById('bm-dragon-extra');
   if(extraEl) extraEl.style.display = on ? 'flex' : 'none';
