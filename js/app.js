@@ -45,7 +45,7 @@ import { goLeaderboard, lbGoPrev, lbGoNext,
 import { toggleSyncSw, updateRoomCode, syncEnabled, getRoomCode } from './firebase/init.js';
 import { isDragonOn, toggleDragon, setDragonOn, initDragonData,
          dragonData, renderDragonSection, renderPotSummary,
-         saveDragonState, loadDragonState,
+         saveDragonState, loadDragonState, mulliganUse, potToggle,
          buildDragonPotHTML, calcDragonTeamScores } from './modules/dragon.js';
 import { loadOnlineSetting, goOnlineSetup, saveOnlineSetup, testConnection } from './firebase/room.js';
 import { createRoom, syncFullBackup, restoreFromFirebase,
@@ -188,6 +188,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Dragon Golf V13
   toggleDragon, isDragonOn, renderDragonSection, renderPotSummary,
   buildDragonPotHTML, calcDragonTeamScores,
+  drMulUse: (h,p) => mulliganUse(p,h),
+  drPotToggle: (h,p,t) => potToggle(h,p,t),
     goOnlineSetup, saveOnlineSetup, testConnection, createRoom,
     restoreFromFirebase, restoreJoinSrikrung,
     deleteRoomFromFirebase,
@@ -791,6 +793,8 @@ Object.assign(window, {
   // Dragon Golf V13
   toggleDragon, isDragonOn, renderDragonSection, renderPotSummary,
   buildDragonPotHTML, calcDragonTeamScores,
+  drMulUse: (h,p) => mulliganUse(p,h),
+  drPotToggle: (h,p,t) => potToggle(h,p,t),
   goOnlineSetup, saveOnlineSetup, testConnection, createRoom,
   joinRoomLookup, selectJoinPlayer,
   showExportModal, hideExportModal, setExportWho, doExport,
