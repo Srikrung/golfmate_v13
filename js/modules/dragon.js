@@ -500,7 +500,7 @@ export function renderPotSummary(){
   wrap.innerHTML=`
     <div style="font-size:10px;font-weight:700;color:var(--gold);margin-bottom:7px">🏦 กองกลางสะสม</div>
     <div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="font-size:10px;color:var(--lbl2)">💧 น้ำ/ทราย/3พัต</span><span style="font-size:11px;font-weight:700;color:var(--orange)">${perP.reduce((s,p)=>s+p.water+p.sand+p.putt3,0)}฿</span></div>
-    <div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="font-size:10px;color:var(--lbl2)">🐦 Birdie/Eagle/Alb/HIO AUTO</span><span style="font-size:11px;font-weight:700;color:var(--orange)">${perP.reduce((s,p)=>s+p.birdie,0)}฿</span></div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="font-size:10px;color:var(--lbl2)">🐦 Birdie+ AUTO (h9,18×2)</span><span style="font-size:11px;font-weight:700;color:var(--orange)">${perP.reduce((s,p)=>s+p.birdie,0)}฿</span></div>
     <div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="font-size:10px;color:var(--lbl2)">🏌️ มูลิแกน</span><span style="font-size:11px;font-weight:700;color:var(--orange)">${perP.reduce((s,p)=>s+p.mul,0)}฿</span></div>
     ${perP.reduce((s,p)=>s+p.settamaa,0)>0?`<div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="font-size:10px;color:var(--lbl2)">🐴 ตั้งม้า</span><span style="font-size:11px;font-weight:700;color:var(--orange)">${perP.reduce((s,p)=>s+p.settamaa,0)}฿</span></div>`:''}
     <div style="border-top:1px solid rgba(255,215,0,0.18);margin-top:6px;padding-top:6px;display:flex;justify-content:space-between;align-items:center">
