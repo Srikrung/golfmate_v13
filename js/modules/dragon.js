@@ -37,6 +37,8 @@ function _syncDragonUI(){
   document.querySelectorAll('.dragon-game-row').forEach(el=>{ el.style.display=on?'flex':'none'; });
   const chipLbl = document.getElementById('dragon-chip-pt');
   if(chipLbl) chipLbl.textContent = on?'8':'7';
+  // re-render player rows เพื่อแสดง/ซ่อน ตั้งม้า input
+  if(typeof window.renderPlayerRows === 'function') window.renderPlayerRows();
   // Dragon bite mults — lock/unlock
   const DRAGON_MULTS = {birdie:3,eagle:4,albatross:25,hio:50};
   const DEFAULT_MULTS = {birdie:2,eagle:3,albatross:5,hio:10};
