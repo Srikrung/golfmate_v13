@@ -185,7 +185,23 @@ export async function syncFullBackup(){
     teamSoloPlayers: [...teamSoloPlayers],
     courseName: document.getElementById('course-name')?.value || '—',
     gameDate,
-    backedUpAt: Date.now()
+    backedUpAt: Date.now(),
+    // Dragon Golf V13
+    dragon: G.dragon?.on ? (() => {
+      try{
+        const calcDragonTeamScores = window.calcDragonTeamScores;
+        const dragonData = window.dragonData;
+        const teamPts = calcDragonTeamScores ? calcDragonTeamScores() : {};
+        const n = players.length;
+        const pot = {};
+        if(window.calcPlayerPot){
+          let w=0,s=0,p3=0,b=0,m=0,st=0;
+          for(let i=0;i<n;i++){ const pp=window.calcPlayerPot(i); if(pp){w+=pp.water;s+=pp.sand;p3+=pp.putt3;b+=pp.birdie;m+=pp.mul;st+=pp.settamaa;} }
+          Object.assign(pot,{water:w,sand:s,putt3:p3,birdie:b,mul:m,settamaa:st});
+        }
+        return { on:true, teamPts, pot, mulligan: dragonData?.mulligan };
+      }catch(e){ return {on:true}; }
+    })() : {on:false}
   };
 
   try{
