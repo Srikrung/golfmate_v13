@@ -1626,14 +1626,14 @@ async function drTournamentLoad(){
 
   for(const room of rooms){
     try{
-      const r = await fetch(`${FB}/scores/${today}/${room}.json`);
+      const r = await fetch(`${FB}/backup/${today}/${room}/session.json`);
       const d = await r.json();
       if(!d){ groupData.push({room,pts:{A:0,B:0,C:0},ok:false}); continue; }
-      // รวมแต้มทีมจาก Firebase (dragon_team_pts)
-      const pts = d._dragon_team_pts||{A:0,B:0,C:0};
+      // รวมแต้มทีมจาก backup (dragon.teamPts)
+      const pts = d.dragon?.teamPts||{A:0,B:0,C:0};
       Object.keys(pts).forEach(t=>{ if(teamTotals[t]!==undefined) teamTotals[t]+=pts[t]; });
       // กองกลาง
-      const pot = d._dragon_pot||{};
+      const pot = d.dragon?.pot||{};
       Object.keys(potTotals).forEach(k=>{ potTotals[k]+=(pot[k]||0); });
       groupData.push({room,pts,ok:true});
     }catch(e){ groupData.push({room,pts:{A:0,B:0,C:0},ok:false}); }
