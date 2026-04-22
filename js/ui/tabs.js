@@ -150,11 +150,20 @@ export async function loadCoursesDropdown(){
     if(_allCourses['mthb']) sel.value = 'mthb';
 
   }catch(e){
-    // fallback ถ้า Firebase ไม่ได้
+    console.error('loadCoursesDropdown error:', e);
     sel.innerHTML = `
       <option value="custom">-- พิมพ์ชื่อสนามเอง --</option>
       <option value="__add__">➕ เพิ่มสนามใหม่...</option>
     `;
+  }
+  // ถ้า dropdown มีแค่ 2 รายการ (fallback) ลอง retry อีกครั้งหลัง 3 วิ
+  if(sel.options.length <= 2){
+    setTimeout(async ()=>{
+      try{
+        _allCourses = await fetchCourses();
+        if(Object.keys(_allCourses).length > 0) loadCoursesDropdown();
+      }catch(e){}
+    }, 3000);
   }
 
   changeCoursePreset();
