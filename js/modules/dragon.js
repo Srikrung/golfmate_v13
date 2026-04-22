@@ -137,33 +137,36 @@ function _refreshPotSummary(){
 
 
 // ── มูลิแกน ──
-// หลุม 1 = ฟรี 1 ครั้ง | ทั้งเกม = 2 สิทธิ์ paid ใช้หลุมไหนก็ได้ × 100฿
-export function mulliganUse(playerIdx, hole){
+// หลุม 1 = ฟรี 1 ครั้ง | ทั้งเกม paid 2 สิทธิ์ × 100฿
+// action: 'plus' เพิ่ม | 'minus' ลด
+export function mulliganUse(playerIdx, hole, action='plus'){
   let m = dragonData.mulligan[playerIdx];
-  // ป้องกัน structure เก่า (array) → แปลงเป็น object ใหม่
   if(!m || Array.isArray(m)){
     dragonData.mulligan[playerIdx] = {freeUsed:false, paid:[]};
     m = dragonData.mulligan[playerIdx];
   }
   if(!m.paid) m.paid = [];
-  if(hole === 0){
-    const h0paid = m.paid.includes(0);
+
+  const paidCount = m.paid.length;
+  const total     = (m.freeUsed?1:0) + paidCount;
+
+  if(action === 'plus'){
+    if(total >= 3) return; // max = ฟรี1 + paid2
     if(!m.freeUsed){
-      m.freeUsed = true;
-    } else if(!h0paid && m.paid.length < 2){
-      m.paid.push(0); dragonData.potTotal += 100;
-    } else {
-      if(h0paid){ m.paid.splice(m.paid.indexOf(0),1); dragonData.potTotal -= 100; }
-      m.freeUsed = false;
-    }
-  } else {
-    const idx = m.paid.indexOf(hole);
-    if(idx !== -1){
-      m.paid.splice(idx, 1);
-      dragonData.potTotal -= 100;
-    } else if(m.paid.length < 2){
+      m.freeUsed = true; // ฟรีก่อน
+    } else if(paidCount < 2){
       m.paid.push(hole);
       dragonData.potTotal += 100;
+    }
+  } else { // minus
+    if(total <= 0) return;
+    if(paidCount > 0){
+      // ถอน paid ล่าสุดก่อน
+      const last = m.paid[m.paid.length-1];
+      m.paid.pop();
+      dragonData.potTotal -= 100;
+    } else if(m.freeUsed){
+      m.freeUsed = false;
     }
   }
   _refreshDragonSection(hole);
@@ -402,42 +405,41 @@ export function renderDragonSection(h){
 
   let html = `<div class="dragon-sec-title">🐉 Dragon Golf</div>`;
 
-  // มูลิแกน
-  const totalPaidAll = players.reduce((s,_,p)=>{
-    const mp = dragonData.mulligan[p]||{paid:[]};
-    return s + (mp.paid||[]).length;
-  },0); // ใช้แค่ per player
+  // มูลิแกน — Stepper style
   html += `<div class="dr-sub-wrap">
-    <div class="dr-sub-title" style="color:var(--dragon)">🏌️ มูลิแกน ${isHole1
-      ? '<span style="font-size:9px;color:var(--green)">(หลุม 1 ฟรี 1 ครั้ง)</span>'
-      : '<span style="font-size:9px;color:var(--lbl3)">100฿/ครั้ง · เหลือสิทธิ์ 2 ครั้ง/คน ทั้งเกม</span>'
-    }</div>`;
+    <div class="dr-sub-title" style="color:var(--dragon)">🏌️ มูลิแกน
+      <span style="font-size:9px;color:var(--lbl3)">หลุม 1 ฟรี · ทั้งเกม 2 สิทธิ์/คน × 100฿</span>
+    </div>`;
 
   players.forEach((pl,p)=>{
-    const m = dragonData.mulligan[p]||{freeUsed:false, paid:[]};
+    let m = dragonData.mulligan[p]||{freeUsed:false, paid:[]};
+    if(!m.paid) m.paid = [];
     const clr = pColors[p%pColors.length];
     const paidCount = (m.paid||[]).length;
-    const h0paid    = isHole1 && (m.paid||[]).includes(0);
-    const usedHere  = isHole1 ? (m.freeUsed||h0paid) : (m.paid||[]).includes(h);
-    const maxed     = !isHole1 && !usedHere && paidCount >= 2;
-    // label สั้น
-    let btnLabel;
-    if(isHole1){
-      if(!m.freeUsed)       btnLabel = 'ฟรี';
-      else if(!h0paid)      btnLabel = '✓ฟรี · กดอีก 100฿';
-      else                  btnLabel = '✓ฟรี+100฿ · กดยกเลิก';
-    } else {
-      btnLabel = maxed ? 'เต็ม' : usedHere ? '✓ 100฿' : '100฿';
-    }
-    const remain = 2 - paidCount;
-    html += `<div class="dr-mul-row">
+    const freeUsed  = m.freeUsed;
+    // นับรวม: ฟรี=1 + paid
+    const total     = (freeUsed?1:0) + paidCount;
+    const maxTotal  = 3; // ฟรี1 + paid2
+    const canPlus   = total < maxTotal;
+    const canMinus  = total > 0;
+    // cost แสดง
+    const costPaid  = paidCount * 100;
+    const costLbl   = total===0 ? '—' : freeUsed&&paidCount===0 ? 'ฟรี' : freeUsed ? `ฟรี+${costPaid}฿` : `${costPaid}฿`;
+    const costColor = paidCount>0 ? '#ff9f0a' : freeUsed ? '#30d158' : 'rgba(255,255,255,0.3)';
+
+    html += `<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
       <div class="dr-pname" style="color:${clr}">${sn(pl.name)}</div>
-      <button class="dr-mul-btn${usedHere?' used':''} ${maxed?'dr-dis':''}"
-        onclick="drMulUse(${h},${p})" style="flex:1" ${maxed?'disabled':''}>
-        ${btnLabel}
-      </button>
-      <div class="dr-mul-cnt" style="${(usedHere||paidCount>0)?'background:rgba(255,107,43,0.3)':'background:rgba(255,255,255,0.05);color:var(--lbl3)'}">
-        ${isHole1?(m.freeUsed?(h0paid?'2':'1'):'0'):(remain+'เหลือ')}
+      <div style="flex:1;display:flex;align-items:center;gap:6px">
+        <button onclick="drMulUse(${h},${p},'minus')"
+          style="width:30px;height:30px;border-radius:8px;border:1.5px solid rgba(255,107,43,0.3);background:rgba(255,107,43,0.08);color:#ff6b2b;font-size:18px;font-weight:700;cursor:pointer;font-family:inherit;${!canMinus?'opacity:.25;cursor:default':''}"
+          ${!canMinus?'disabled':''}>−</button>
+        <div style="flex:1;height:30px;border-radius:8px;border:1.5px solid rgba(255,107,43,0.2);background:rgba(255,107,43,0.05);display:flex;align-items:center;justify-content:center;gap:8px">
+          <span style="font-size:18px;font-weight:800;color:${total>0?'#ff6b2b':'rgba(255,255,255,0.2)'}">${total}</span>
+          <span style="font-size:11px;font-weight:700;color:${costColor}">${costLbl}</span>
+        </div>
+        <button onclick="drMulUse(${h},${p},'plus')"
+          style="width:30px;height:30px;border-radius:8px;border:1.5px solid rgba(255,107,43,0.3);background:rgba(255,107,43,0.08);color:#ff6b2b;font-size:18px;font-weight:700;cursor:pointer;font-family:inherit;${!canPlus?'opacity:.25;cursor:default':''}"
+          ${!canPlus?'disabled':''}>+</button>
       </div>
     </div>`;
   });
