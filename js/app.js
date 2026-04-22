@@ -46,7 +46,7 @@ import { toggleSyncSw, updateRoomCode, syncEnabled, getRoomCode } from './fireba
 import { isDragonOn, toggleDragon, setDragonOn, initDragonData,
          dragonData, renderDragonSection, renderPotSummary,
          saveDragonState, loadDragonState, mulliganUse, potToggle,
-         buildDragonPotHTML, calcDragonTeamScores } from './modules/dragon.js';
+         buildDragonPotHTML, calcDragonTeamScores, calcPlayerPot } from './modules/dragon.js';
 import { loadOnlineSetting, goOnlineSetup, saveOnlineSetup, testConnection } from './firebase/room.js';
 import { createRoom, syncFullBackup, restoreFromFirebase,
          deleteRoomFromFirebase } from './firebase/sync.js';
@@ -163,6 +163,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // bridge สำหรับ config.js ที่ใช้ window._autoSave()
   window._autoSave = ()=>{ saveSession(); saveDragonState(); };
   window._updateAddPlayerBtn = updateAddPlayerBtn;
+  // expose dragon functions สำหรับ sync
+  window.calcDragonTeamScores = calcDragonTeamScores;
+  window.dragonData = dragonData;
+  window.calcPlayerPot = calcPlayerPot;
   // Dragon onclick — set _fn เพื่อให้ plain global fn ใน HTML เรียกได้
   if(typeof drMulUse     === 'function') drMulUse._fn     = (h,p,a) => mulliganUse(p,h,a||'plus');
   if(typeof drPotToggle  === 'function') drPotToggle._fn  = (h,p,t) => potToggle(h,p,t);
