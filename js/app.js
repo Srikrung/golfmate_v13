@@ -161,8 +161,18 @@ document.addEventListener('DOMContentLoaded', () => {
   window._autoSave = ()=>{ saveSession(); saveDragonState(); };
   window._updateAddPlayerBtn = updateAddPlayerBtn;
   // Dragon onclick — set _fn เพื่อให้ plain global fn ใน HTML เรียกได้
-  if(typeof drMulUse    === 'function') drMulUse._fn    = (h,p)   => mulliganUse(p,h);
-  if(typeof drPotToggle === 'function') drPotToggle._fn = (h,p,t) => potToggle(h,p,t);
+  if(typeof drMulUse     === 'function') drMulUse._fn     = (h,p)   => mulliganUse(p,h);
+  if(typeof drPotToggle  === 'function') drPotToggle._fn  = (h,p,t) => potToggle(h,p,t);
+  if(typeof resetRoomCode === 'function') resetRoomCode._fn = () => {
+    if(!confirm('รีเซ็ต Room Code?\nจะล้างค่าและ sync จะหยุดทำงานจนกว่าจะตั้งใหม่')) return;
+    const sl  = document.getElementById('room-code-letter');
+    const sn  = document.getElementById('room-code-num');
+    const sn2 = document.getElementById('room-code-num2');
+    if(sl)  sl.selectedIndex  = 0;
+    if(sn)  sn.selectedIndex  = 0;
+    if(sn2) sn2.selectedIndex = 0;
+    updateRoomCode();
+  };
   window.drMulUse    = (h,p)   => mulliganUse(p,h);
   window.drPotToggle = (h,p,t) => potToggle(h,p,t);
 
