@@ -247,6 +247,11 @@ export function calcDragonTeamScores(){
       if(scores[p][h]!==null) groups[t].push(scores[p][h]);
     });
 
+    // ข้ามหลุมที่ยังไม่มีสกอร์เลย หรือมีทีมใดทีมหนึ่งไม่มีสกอร์
+    const teamKeys = Object.keys(groups);
+    if(teamKeys.some(t=>groups[t].length===0)) continue;
+    if(teamKeys.length<2) continue;
+
     // Best N ต่อทีม (sort น้อย→มาก, เอา N ตัวแรก)
     const bests = {};
     Object.entries(groups).forEach(([t,arr])=>{
