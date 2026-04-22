@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window._autoSave = ()=>{ saveSession(); saveDragonState(); };
   window._updateAddPlayerBtn = updateAddPlayerBtn;
   // Dragon onclick — set _fn เพื่อให้ plain global fn ใน HTML เรียกได้
-  if(typeof drMulUse     === 'function') drMulUse._fn     = (h,p)   => mulliganUse(p,h);
+  if(typeof drMulUse     === 'function') drMulUse._fn     = (h,p,a) => mulliganUse(p,h,a||'plus');
   if(typeof drPotToggle  === 'function') drPotToggle._fn  = (h,p,t) => potToggle(h,p,t);
   if(typeof resetRoomCode === 'function') resetRoomCode._fn = () => {
     if(!confirm('รีเซ็ต Room Code?\nจะล้างค่าและ sync จะหยุดทำงานจนกว่าจะตั้งใหม่')) return;
@@ -173,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(sn2) sn2.selectedIndex = 0;
     updateRoomCode();
   };
-  window.drMulUse    = (h,p)   => mulliganUse(p,h);
+  window.drMulUse    = (h,p,a) => mulliganUse(p,h,a||'plus');
   window.drPotToggle = (h,p,t) => potToggle(h,p,t);
 
   // expose ทุก function ที่ HTML onclick เรียก
@@ -213,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Dragon Golf V13
   toggleDragon, isDragonOn, renderDragonSection, renderPotSummary,
   buildDragonPotHTML, calcDragonTeamScores,
-  drMulUse: (h,p) => mulliganUse(p,h),
+  drMulUse: (h,p,a) => mulliganUse(p,h,a||'plus'),
   drPotToggle: (h,p,t) => potToggle(h,p,t),
     goOnlineSetup, saveOnlineSetup, testConnection, createRoom,
     restoreFromFirebase, restoreJoinSrikrung,
@@ -818,7 +818,7 @@ Object.assign(window, {
   // Dragon Golf V13
   toggleDragon, isDragonOn, renderDragonSection, renderPotSummary,
   buildDragonPotHTML, calcDragonTeamScores,
-  drMulUse: (h,p) => mulliganUse(p,h),
+  drMulUse: (h,p,a) => mulliganUse(p,h,a||'plus'),
   drPotToggle: (h,p,t) => potToggle(h,p,t),
   goOnlineSetup, saveOnlineSetup, testConnection, createRoom,
   joinRoomLookup, selectJoinPlayer,
