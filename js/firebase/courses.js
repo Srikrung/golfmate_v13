@@ -31,13 +31,28 @@ export async function fetchCourses(){
   // 3) Firebase fetch
   try{
     const res  = await fetchWithTimeout(`${FB_URL}/courses.json`,{},8000);
+    if(res.status === 401){
+      // Rules หมดอายุ — clear cache แจ้งผู้ใช้
+      console.warn('⚠️ Firebase 401 — ตรวจสอบ Rules');
+      localStorage.removeItem(CACHE_KEY);
+      _cache = {}; _cacheTime = 0;
+      return {};
+    }
     const data = res.ok ? await res.json() : null;
-    _cache     = data || {};
-    _cacheTime = Date.now();
-    try{ localStorage.setItem(CACHE_KEY, JSON.stringify({data:_cache, ts:_cacheTime})); }catch(e){}
+    if(data && typeof data === 'object' && Object.keys(data).length > 0){
+      _cache     = data;
+      _cacheTime = Date.now();
+      try{ localStorage.setItem(CACHE_KEY, JSON.stringify({data:_cache, ts:_cacheTime})); }catch(e){}
+    } else if(!data){
+      // Firebase ตอบกลับผิดปกติ — ใช้ cache เก่า
+      const ls = JSON.parse(localStorage.getItem(CACHE_KEY)||'{}');
+      return ls.data || {};
+    } else {
+      _cache = data; _cacheTime = Date.now();
+    }
     return _cache;
   }catch(e){
-    // offline → คืน cache เก่า (หมดอายุก็ยังดีกว่าไม่มี)
+    // offline → คืน cache เก่า
     try{
       const ls = JSON.parse(localStorage.getItem(CACHE_KEY)||'{}');
       return ls.data || {};
