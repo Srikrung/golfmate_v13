@@ -75,6 +75,16 @@ function autoGenRoomCode(){
   for(let i=0;i<sn2.options.length;i++) if(sn2.options[i].value===d2){sn2.selectedIndex=i;break;}
   updateRoomCode();
 }
+function resetRoomCode(){
+  if(!confirm('รีเซ็ต Room Code?\nจะล้างค่าและ sync จะหยุดทำงานจนกว่าจะตั้งใหม่')) return;
+  const sl  = document.getElementById('room-code-letter');
+  const sn  = document.getElementById('room-code-num');
+  const sn2 = document.getElementById('room-code-num2');
+  if(sl)  sl.selectedIndex  = 0;
+  if(sn)  sn.selectedIndex  = 0;
+  if(sn2) sn2.selectedIndex = 0;
+  updateRoomCode();
+}
 // ============================================================
 // INIT
 // ============================================================
@@ -150,6 +160,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // bridge สำหรับ config.js ที่ใช้ window._autoSave()
   window._autoSave = ()=>{ saveSession(); saveDragonState(); };
   window._updateAddPlayerBtn = updateAddPlayerBtn;
+  // Dragon onclick — set _fn เพื่อให้ plain global fn ใน HTML เรียกได้
+  if(typeof drMulUse    === 'function') drMulUse._fn    = (h,p)   => mulliganUse(p,h);
+  if(typeof drPotToggle === 'function') drPotToggle._fn = (h,p,t) => potToggle(h,p,t);
+  window.drMulUse    = (h,p)   => mulliganUse(p,h);
+  window.drPotToggle = (h,p,t) => potToggle(h,p,t);
 
   // expose ทุก function ที่ HTML onclick เรียก
   Object.assign(window, {
@@ -184,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // leaderboard
     goLeaderboard, lbGoPrev, lbGoNext, lbSetTab, lbSetRoom, lbFetch,
     // firebase
-    toggleSyncSw, updateRoomCode, autoGenRoomCode,
+    toggleSyncSw, updateRoomCode, autoGenRoomCode, resetRoomCode,
   // Dragon Golf V13
   toggleDragon, isDragonOn, renderDragonSection, renderPotSummary,
   buildDragonPotHTML, calcDragonTeamScores,
@@ -789,7 +804,7 @@ Object.assign(window, {
   hcapTogglePair, hcapFlipDir, hcapSetStroke, hcapSetField, buildHcapUI,
   sgToggle, sgChPutt, sgSetPutt1,
   goLeaderboard, lbGoPrev, lbGoNext, lbSetTab, lbSetRoom, lbFetch,
-  toggleSyncSw, updateRoomCode, autoGenRoomCode,
+  toggleSyncSw, updateRoomCode, autoGenRoomCode, resetRoomCode,
   // Dragon Golf V13
   toggleDragon, isDragonOn, renderDragonSection, renderPotSummary,
   buildDragonPotHTML, calcDragonTeamScores,
