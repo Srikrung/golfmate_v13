@@ -1520,7 +1520,7 @@ function showDragonGuide(){ document.getElementById('dragon-guide-modal').style.
 function hideDragonGuide(){ document.getElementById('dragon-guide-modal').style.display='none'; document.body.style.overflow=''; }
 document.getElementById('dragon-guide-modal').addEventListener('click', function(e){ if(e.target===this) hideDragonGuide(); });
 // Dragon onclick — plain global functions (ES module window.assign ไม่พอ)
-function drMulUse(h,p){ if(window.drMulUse._fn) window.drMulUse._fn(h,p); }
+function drMulUse(h,p,a){ if(window.drMulUse._fn) window.drMulUse._fn(h,p,a); }
 function drPotToggle(h,p,t){ if(window.drPotToggle._fn) window.drPotToggle._fn(h,p,t); }
 function resetRoomCode(){ if(window.resetRoomCode._fn) window.resetRoomCode._fn(); }
 </script>
