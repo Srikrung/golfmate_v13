@@ -656,7 +656,8 @@
         <input type="hidden" id="room-code" value="">
         <div style="display:flex;align-items:center;gap:8px;margin-top:10px">
           <div style="font-size:11px;color:var(--lbl2);flex:1;text-align:center">26×10×10 = 2,600 ห้อง</div>
-          <button onclick="autoGenRoomCode()" style="padding:8px 14px;border-radius:10px;border:1.5px solid rgba(10,132,255,0.5);background:rgba(10,132,255,0.1);color:var(--blue);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap">🎲 สุ่ม</button>
+          <button onclick="autoGenRoomCode()" style="padding:8px 14px;border-radius:10px;border:1.5px solid rgba(10,132,255,0.5);background:rgba(10,132,255,0.1);color:var(--blue);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap">🎲 สุ่มห้อง</button>
+          <button onclick="resetRoomCode()" style="padding:8px 14px;border-radius:10px;border:1.5px solid rgba(255,69,58,0.4);background:rgba(255,69,58,0.08);color:#ff453a;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap">🗑️ รีเซ็ตห้อง</button>
         </div>
       </div>
       <!-- Apps Script URL ซ่อน -->
@@ -1518,6 +1519,9 @@
 function showDragonGuide(){ document.getElementById('dragon-guide-modal').style.display='block'; document.body.style.overflow='hidden'; }
 function hideDragonGuide(){ document.getElementById('dragon-guide-modal').style.display='none'; document.body.style.overflow=''; }
 document.getElementById('dragon-guide-modal').addEventListener('click', function(e){ if(e.target===this) hideDragonGuide(); });
+// Dragon onclick — plain global functions (ES module window.assign ไม่พอ)
+function drMulUse(h,p){ if(window.drMulUse._fn) window.drMulUse._fn(h,p); }
+function drPotToggle(h,p,t){ if(window.drPotToggle._fn) window.drPotToggle._fn(h,p,t); }
 </script>
 </body>
 </html>
