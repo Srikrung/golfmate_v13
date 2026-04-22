@@ -139,8 +139,13 @@ function _refreshPotSummary(){
 // ── มูลิแกน ──
 // หลุม 1 = ฟรี 1 ครั้ง | ทั้งเกม = 2 สิทธิ์ paid ใช้หลุมไหนก็ได้ × 100฿
 export function mulliganUse(playerIdx, hole){
-  const m = dragonData.mulligan[playerIdx];
-  if(!m) return;
+  let m = dragonData.mulligan[playerIdx];
+  // ป้องกัน structure เก่า (array) → แปลงเป็น object ใหม่
+  if(!m || Array.isArray(m)){
+    dragonData.mulligan[playerIdx] = {freeUsed:false, paid:[]};
+    m = dragonData.mulligan[playerIdx];
+  }
+  if(!m.paid) m.paid = [];
   if(hole === 0){
     const h0paid = m.paid.includes(0);
     if(!m.freeUsed){
