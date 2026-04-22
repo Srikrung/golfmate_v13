@@ -110,7 +110,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const today = now.toISOString().split('T')[0];
       if(saved.gameDate !== today && hour >= 4 && hour < 6){
         localStorage.removeItem(LS_KEY);
-        // V12.1: reset Room Code กลับค่าเริ่มต้น (ว่าง) เมื่อข้ามวัน
+        // กัน restore loop หลัง auto-expire
+        sessionStorage.setItem('golfmate_just_cleared','1');
+        // V13: reset Room Code กลับค่าเริ่มต้น (ว่าง) เมื่อข้ามวัน
         try{
           const sl = document.getElementById('room-code-letter');
           const sn = document.getElementById('room-code-num');
@@ -134,8 +136,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if(!hadLocal){
       // ไม่มีข้อมูลในเครื่อง → ลองดึง Firebase อัตโนมัติ
       // แต่ถ้าเพิ่ง clear ข้อมูลไป ห้าม restore
-      const justCleared = sessionStorage.getItem('golfmate_just_cleared');
-      if(justCleared){ sessionStorage.removeItem('golfmate_just_cleared'); return; }
+      const justCleared  = sessionStorage.getItem('golfmate_just_cleared');
+      const justRestored = sessionStorage.getItem('golfmate_just_restored');
+      if(justCleared){  sessionStorage.removeItem('golfmate_just_cleared');  return; }
+      if(justRestored){ sessionStorage.removeItem('golfmate_just_restored'); return; }
       try{
         const online = JSON.parse(localStorage.getItem('golfmate_online')||'{}');
         if(online.room && online.room !== 'DEFAULT'){
