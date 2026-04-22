@@ -677,9 +677,19 @@ export async function initRestoreBtn(){
 
 export function clearGameData(){
   if(!confirm('ล้างข้อมูลเกมเก่า?\n\nสกอร์ในเครื่องจะหาย\n(Firebase backup ยังอยู่ — กู้คืนได้ภายหลัง)')) return;
+  // ล้าง localStorage ทั้งหมดที่เกี่ยวกับเกม
   localStorage.removeItem(LS_KEY);
+  localStorage.removeItem('golfmate_dragon_v13');
+  // reset state
   setPlayers([]); setScores([]); setCurrentHole(0); setGameStarted(false);
-  location.reload();
+  // unlock dragon toggle
+  _lockDragonToggle(false);
+  // ไปหน้า setup โดยไม่ reload (ป้องกันวนลูป)
+  setDragonOn(false);
+  renderPlayerRows();
+  buildTurboGrid();
+  initDragonData(4);
+  goTab('setup');
 }
 export function autoSave(){ saveSession(); }
 
