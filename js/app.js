@@ -133,6 +133,9 @@ document.addEventListener('DOMContentLoaded', () => {
     loadDragonState();
     if(!hadLocal){
       // ไม่มีข้อมูลในเครื่อง → ลองดึง Firebase อัตโนมัติ
+      // แต่ถ้าเพิ่ง clear ข้อมูลไป ห้าม restore
+      const justCleared = sessionStorage.getItem('golfmate_just_cleared');
+      if(justCleared){ sessionStorage.removeItem('golfmate_just_cleared'); return; }
       try{
         const online = JSON.parse(localStorage.getItem('golfmate_online')||'{}');
         if(online.room && online.room !== 'DEFAULT'){
@@ -680,6 +683,8 @@ export function clearGameData(){
   // ล้าง localStorage ทั้งหมดที่เกี่ยวกับเกม
   localStorage.removeItem(LS_KEY);
   localStorage.removeItem('golfmate_dragon_v13');
+  // flag ป้องกัน auto-restore วนซ้ำ
+  sessionStorage.setItem('golfmate_just_cleared','1');
   // reset state
   setPlayers([]); setScores([]); setCurrentHole(0); setGameStarted(false);
   // unlock dragon toggle
