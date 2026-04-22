@@ -39,6 +39,9 @@ function _syncDragonUI(){
   if(chipLbl) chipLbl.textContent = on?'8':'7';
   // re-render player rows เพื่อแสดง/ซ่อน ตั้งม้า input
   if(typeof window.renderPlayerRows === 'function') window.renderPlayerRows();
+  // ซ่อน/แสดง tab อันดับ Live ตาม Dragon ON/OFF
+  const btnLb = document.getElementById('res-tab-lb');
+  if(btnLb) btnLb.style.display = on ? 'none' : '';
   // Dragon bite mults — lock/unlock
   const DRAGON_MULTS = {birdie:3,eagle:4,albatross:25,hio:50};
   const DEFAULT_MULTS = {birdie:2,eagle:3,albatross:5,hio:10};
