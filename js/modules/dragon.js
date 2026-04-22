@@ -211,9 +211,10 @@ export function calcPlayerPot(playerIdx){
   const mp = dragonData.mulligan[p]||{paid:[]};
   mul = (mp.paid||[]).length * 100;
 
-  // ตั้งม้า
+  // ตั้งม้า — คำนวณเฉพาะเมื่อเล่นครบ 18 หลุม
   const target = G.settamaa?.targets?.[p];
-  if(target != null && target !== ''){
+  const played = scores[p].filter(v=>v!==null).length;
+  if(target != null && target !== '' && played === 18){
     const actual = scores[p].reduce((s,v)=>s+(v||0),0);
     if(actual > target)      settamaa = 20;
     else if(actual < target) settamaa = 40;
@@ -481,6 +482,7 @@ export function renderPotSummary(){
     <div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="font-size:10px;color:var(--lbl2)">💧 น้ำ/ทราย/3พัต</span><span style="font-size:11px;font-weight:700;color:var(--orange)">${perP.reduce((s,p)=>s+p.water+p.sand+p.putt3,0)}฿</span></div>
     <div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="font-size:10px;color:var(--lbl2)">🐦 Birdie/Eagle/Alb/HIO AUTO</span><span style="font-size:11px;font-weight:700;color:var(--orange)">${perP.reduce((s,p)=>s+p.birdie,0)}฿</span></div>
     <div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="font-size:10px;color:var(--lbl2)">🏌️ มูลิแกน</span><span style="font-size:11px;font-weight:700;color:var(--orange)">${perP.reduce((s,p)=>s+p.mul,0)}฿</span></div>
+    ${perP.reduce((s,p)=>s+p.settamaa,0)>0?`<div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="font-size:10px;color:var(--lbl2)">🐴 ตั้งม้า</span><span style="font-size:11px;font-weight:700;color:var(--orange)">${perP.reduce((s,p)=>s+p.settamaa,0)}฿</span></div>`:''}
     <div style="border-top:1px solid rgba(255,215,0,0.18);margin-top:6px;padding-top:6px;display:flex;justify-content:space-between;align-items:center">
       <span style="font-size:12px;font-weight:800;color:var(--gold)">รวมกองกลาง</span>
       <span style="font-size:18px;font-weight:800;color:var(--gold)">${total.toLocaleString()}฿</span>
