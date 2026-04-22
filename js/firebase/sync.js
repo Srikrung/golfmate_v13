@@ -266,6 +266,8 @@ export async function restoreFromFirebase(silent=false){
 
     // บันทึกลง localStorage แล้ว reload
     localStorage.setItem(LS_KEY, JSON.stringify({...data, v:1}));
+    // flag กัน restore loop หลัง reload
+    sessionStorage.setItem('golfmate_just_restored','1');
     show('✅ กู้คืนสำเร็จ! กำลังโหลด...','rgba(48,209,88,0.9)');
     setTimeout(()=>window.location.reload(), 1200);
 
