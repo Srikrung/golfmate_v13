@@ -87,12 +87,29 @@ export function switchResultsTab(tab){
     if(secLb) secLb.style.display='flex';
     if(scr)   scr.classList.add('lb-mode');
     lbActivate(); // measure layout + fetch + start timers
+  } else if(tab === 'tournament'){
+    // ── ไปหน้า Dragon Tournament ──
+    const btnTr = document.getElementById('res-tab-tournament');
+    const secTr = document.getElementById('res-sec-tournament');
+    if(btnSc){ btnSc.style.background='var(--bg3)'; btnSc.style.color='var(--lbl2)'; }
+    if(btnLb){ btnLb.style.background='var(--bg3)'; btnLb.style.color='var(--lbl2)'; }
+    if(btnTr){ btnTr.style.background='var(--dragon,#ff6b2b)'; btnTr.style.color='#fff'; }
+    if(secSc) secSc.style.display='none';
+    if(secLb) secLb.style.display='none';
+    if(secTr) secTr.style.display='block';
+    if(scr)   scr.classList.remove('lb-mode');
+    lbStopTimers();
+    if(typeof window.drTournamentInit==='function') window.drTournamentInit();
   } else {
     // ── ไปหน้า สกอร์การ์ด ──
+    const btnTr = document.getElementById('res-tab-tournament');
+    const secTr = document.getElementById('res-sec-tournament');
     if(btnSc){ btnSc.style.background='var(--blue)'; btnSc.style.color='#fff'; }
     if(btnLb){ btnLb.style.background='var(--bg3)'; btnLb.style.color='var(--lbl2)'; }
+    if(btnTr){ btnTr.style.background='var(--bg3)'; btnTr.style.color='var(--lbl2)'; }
     if(secSc) secSc.style.display='block';
     if(secLb) secLb.style.display='none';
+    if(secTr) secTr.style.display='none';
     if(scr)   scr.classList.remove('lb-mode');
     lbStopTimers();
   }
