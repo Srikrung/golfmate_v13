@@ -39,9 +39,11 @@ function _syncDragonUI(){
   if(chipLbl) chipLbl.textContent = on?'8':'7';
   // re-render player rows เพื่อแสดง/ซ่อน ตั้งม้า input
   if(typeof window.renderPlayerRows === 'function') window.renderPlayerRows();
-  // ซ่อน/แสดง tab อันดับ Live ตาม Dragon ON/OFF
+  // ซ่อน/แสดง tab ตาม Dragon ON/OFF
   const btnLb = document.getElementById('res-tab-lb');
   if(btnLb) btnLb.style.display = on ? 'none' : '';
+  const btnTr = document.getElementById('res-tab-tournament');
+  if(btnTr) btnTr.style.display = on ? '' : 'none';
   // Dragon bite mults — lock/unlock
   const DRAGON_MULTS = {birdie:3,eagle:4,albatross:25,hio:50};
   const DEFAULT_MULTS = {birdie:2,eagle:3,albatross:5,hio:10};
@@ -61,7 +63,15 @@ function _syncDragonUI(){
   // label
   const multLbl = document.getElementById('bite-mult-lbl');
   if(multLbl) multLbl.textContent = on ? 'ตัวคูณ Dragon (ล็อกตายตัว)' : 'ตัวคูณ — แก้ค่าได้';
-  // ── ซ่อน/แสดง sections ตาม Dragon ON/OFF ──
+  // ── ซ่อน dragon bar ใน scorecard, ผล, เงิน เมื่อ OFF ──
+  ['dragon-mode-bar-sc','dragon-mode-bar-res','dragon-mode-bar-money',
+   'dragon-pot-summary'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.style.display = on ? '' : 'none';
+  });
+  // dragon bar ใน setup (id หลัก)
+  const mainBar = document.getElementById('dragon-mode-bar');
+  // ซ่อน/แสดง sections ตาม Dragon ON/OFF ──
   // ต่อแต้ม
   const hcapSec = document.getElementById('hcap-section');
   if(hcapSec) hcapSec.style.display = on ? 'none' : '';
