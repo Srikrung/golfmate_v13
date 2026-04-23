@@ -8,7 +8,7 @@ import { players, scores, pars, G, getCurrentHole, setCurrentHole,
 
 import { updateProgressBar } from './tabs.js';
 
-import { getHoleMoney, getBiteMult } from '../modules/games.js';
+import { getHoleMoney, getBiteMult, getOlyMult } from '../modules/games.js';
 import { isDragonOn, renderDragonSection, renderPotSummary, buildDragonPotHTML } from '../modules/dragon.js';
 import { olyRenderHole, fnRenderHole, toggleGameMidPlay } from '../modules/games.js';
 import { sgRenderHole } from '../modules/srikrung.js';
