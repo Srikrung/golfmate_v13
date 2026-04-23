@@ -313,15 +313,18 @@ export function updateTotals(){
     // sanker vs sanker → ส่วนต่าง pair-by-pair
     for(let i=0;i<sankersOly.length;i++)for(let j=i+1;j<sankersOly.length;j++){
       const a=sankersOly[i],b=sankersOly[j];
-      const diff=Math.round(Math.abs(a.pts-b.pts));
+      const diff=Math.round(Math.abs(a.pts-b.pts)*turboMult*drMult);
       if(a.pts>b.pts){perPairByGame['olympic'][a.p][b.p]+=diff;perPairByGame['olympic'][b.p][a.p]-=diff;}
       else if(b.pts>a.pts){perPairByGame['olympic'][b.p][a.p]+=diff;perPairByGame['olympic'][a.p][b.p]-=diff;}
     }
-    // sanker vs misser → misser จ่าย pts ของ sanker นั้นๆ
+    // sanker vs misser → misser จ่าย pts ของ sanker นั้นๆ (คูณ turbo+dr)
     for(const s of sankersOly)for(const ms of missersOly){
-      perPairByGame['olympic'][s.p][ms.p]+=s.pts;
-      perPairByGame['olympic'][ms.p][s.p]-=s.pts;
+      const tv=s.pts*turboMult*drMult;
+      perPairByGame['olympic'][s.p][ms.p]+=tv;
+      perPairByGame['olympic'][ms.p][s.p]-=tv;
     }
+    // sanker vs sanker ก็ต้องคูณ turbo+dr
+    // (ทำไว้แล้วด้านบนแต่ยังไม่คูณ — fix)
   }
   // team / farNear — ใช้ net money แบ่งตาม loses
   ['team','farNear'].filter(k=>games.includes(k)).forEach(k=>{
@@ -735,13 +738,14 @@ export function buildMatrixHTML(gTot,n,fs,hfs){
       const sankOly=infOly.filter(x=>x.sank&&x.pts!==null);
       const missOly=infOly.filter(x=>!x.sank&&x.pts!==null);
       for(let i=0;i<sankOly.length;i++)for(let j=i+1;j<sankOly.length;j++){
-        const a=sankOly[i],b=sankOly[j],diff=Math.round(Math.abs(a.pts-b.pts));
+        const a=sankOly[i],b=sankOly[j],diff=Math.round(Math.abs(a.pts-b.pts)*turboMult*drMult);
         if(a.pts>b.pts){perPairByGame['olympic'][a.p][b.p]+=diff;perPairByGame['olympic'][b.p][a.p]-=diff;}
         else if(b.pts>a.pts){perPairByGame['olympic'][b.p][a.p]+=diff;perPairByGame['olympic'][a.p][b.p]-=diff;}
       }
       for(const s of sankOly)for(const ms of missOly){
-        perPairByGame['olympic'][s.p][ms.p]+=s.pts;
-        perPairByGame['olympic'][ms.p][s.p]-=s.pts;
+        const tv=s.pts*turboMult*drMult;
+        perPairByGame['olympic'][s.p][ms.p]+=tv;
+        perPairByGame['olympic'][ms.p][s.p]-=tv;
       }
     }
     // team / farNear — net money แบ่ง loses
