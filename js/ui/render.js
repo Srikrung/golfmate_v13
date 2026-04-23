@@ -291,8 +291,40 @@ export function updateTotals(){
       perPairByGame['bite'][wi][lo]+=m; perPairByGame['bite'][lo][wi]-=m;
     }
   }
-  // olympic / team / farNear — ใช้ net money (logic ซับซ้อน ยังถูกต้อง)
-  ['olympic','team','farNear'].filter(k=>games.includes(k)).forEach(k=>{
+  // olympic — คำนวณ pair จาก calcOlympicHole โดยตรง (ถูกต้อง)
+  if(games.includes('olympic')){
+    const od=olympicData[h], r=G.olympic.val;
+    const dqC=players.filter((_,p)=>['dq','dq-sank','dq-miss'].includes(od.status[p])).length;
+    const bPt=2+dqC, ordLen=od.order.length;
+    const infOly=players.map((_,p)=>{
+      const st=od.status[p], idx=od.order.indexOf(p);
+      let base=null, sank=false;
+      if(st==='chip'){base=(G.dragon&&G.dragon.on)?8:7;sank=true;}
+      else if(st==='sank'&&idx!==-1){base=Math.min(7,bPt+(ordLen-1-idx));sank=true;}
+      else if(st==='miss'&&idx!==-1){base=Math.min(7,bPt+(ordLen-1-idx));sank=false;}
+      else if(st==='dq-sank'){base=1;sank=true;}
+      else if(st==='dq-miss'){base=1;sank=false;}
+      if(base===null)return{p,pts:null,sank:false};
+      const s=scores[p][h], mult=s?getOlyMult(s,pars[h]):1;
+      return{p,pts:base*mult,base,sank};
+    });
+    const sankersOly=infOly.filter(x=>x.sank&&x.pts!==null);
+    const missersOly=infOly.filter(x=>!x.sank&&x.pts!==null);
+    // sanker vs sanker → ส่วนต่าง pair-by-pair
+    for(let i=0;i<sankersOly.length;i++)for(let j=i+1;j<sankersOly.length;j++){
+      const a=sankersOly[i],b=sankersOly[j];
+      const diff=Math.round(Math.abs(a.pts-b.pts));
+      if(a.pts>b.pts){perPairByGame['olympic'][a.p][b.p]+=diff;perPairByGame['olympic'][b.p][a.p]-=diff;}
+      else if(b.pts>a.pts){perPairByGame['olympic'][b.p][a.p]+=diff;perPairByGame['olympic'][a.p][b.p]-=diff;}
+    }
+    // sanker vs misser → misser จ่าย pts ของ sanker นั้นๆ
+    for(const s of sankersOly)for(const ms of missersOly){
+      perPairByGame['olympic'][s.p][ms.p]+=s.pts;
+      perPairByGame['olympic'][ms.p][s.p]-=s.pts;
+    }
+  }
+  // team / farNear — ใช้ net money แบ่งตาม loses
+  ['team','farNear'].filter(k=>games.includes(k)).forEach(k=>{
     const arr=mh[k],val=gameVal[k]||1;
     const wins=players.map((_,i)=>i).filter(i=>arr[i]>0);
     const loses=players.map((_,i)=>i).filter(i=>arr[i]<0);
@@ -683,9 +715,38 @@ export function buildMatrixHTML(gTot,n,fs,hfs){
       }
       // olympic — ใช้ getHoleMoney สำหรับ oly/team/farNear (complex logic)
     }
-    // olympic / team / farNear — ยังใช้ logic เดิม (net money / val / pairs)
+    // olympic — pair-by-pair จากข้อมูลจริง (แก้ bug matrix ผิด)
+    if(games.includes('olympic')){
+      const od=olympicData[h];
+      const dqC=players.filter((_,p)=>['dq','dq-sank','dq-miss'].includes(od.status[p])).length;
+      const bPt=2+dqC, ordLen=od.order.length;
+      const infOly=players.map((_,p)=>{
+        const st=od.status[p], idx=od.order.indexOf(p);
+        let base=null, sank=false;
+        if(st==='chip'){base=(G.dragon&&G.dragon.on)?8:7;sank=true;}
+        else if(st==='sank'&&idx!==-1){base=Math.min(7,bPt+(ordLen-1-idx));sank=true;}
+        else if(st==='miss'&&idx!==-1){base=Math.min(7,bPt+(ordLen-1-idx));sank=false;}
+        else if(st==='dq-sank'){base=1;sank=true;}
+        else if(st==='dq-miss'){base=1;sank=false;}
+        if(base===null)return{p,pts:null,sank:false};
+        const s=scores[p][h],mult=s?getOlyMult(s,pars[h]):1;
+        return{p,pts:base*mult,sank};
+      });
+      const sankOly=infOly.filter(x=>x.sank&&x.pts!==null);
+      const missOly=infOly.filter(x=>!x.sank&&x.pts!==null);
+      for(let i=0;i<sankOly.length;i++)for(let j=i+1;j<sankOly.length;j++){
+        const a=sankOly[i],b=sankOly[j],diff=Math.round(Math.abs(a.pts-b.pts));
+        if(a.pts>b.pts){perPairByGame['olympic'][a.p][b.p]+=diff;perPairByGame['olympic'][b.p][a.p]-=diff;}
+        else if(b.pts>a.pts){perPairByGame['olympic'][b.p][a.p]+=diff;perPairByGame['olympic'][a.p][b.p]-=diff;}
+      }
+      for(const s of sankOly)for(const ms of missOly){
+        perPairByGame['olympic'][s.p][ms.p]+=s.pts;
+        perPairByGame['olympic'][ms.p][s.p]-=s.pts;
+      }
+    }
+    // team / farNear — net money แบ่ง loses
     const mh=getHoleMoney(h);
-    ['olympic','team','farNear'].filter(k=>games.includes(k)).forEach(k=>{
+    ['team','farNear'].filter(k=>games.includes(k)).forEach(k=>{
       const val=gameVal[k]||1,arr=mh[k];
       const wins=players.map((_,i)=>i).filter(i=>arr[i]>0);
       const loses=players.map((_,i)=>i).filter(i=>arr[i]<0);
