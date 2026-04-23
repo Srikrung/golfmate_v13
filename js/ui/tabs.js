@@ -34,7 +34,8 @@ export function goTab(n){
   const titles = {setup:'ตั้งค่า',scorecard:'สกอร์',results:'ผลลัพธ์',money:'ยอดเงิน',guide:'คู่มือ',online:'Online'};
   const titleEl = document.getElementById('hdr-title');
   if(titleEl) titleEl.textContent = titles[n] || n;
-  _updateDragonBar(n);
+  // hide dragon bar on non-setup screens
+  try{ const bar=document.getElementById('dragon-mode-bar'); if(bar) bar.style.display=n==='setup'?'':'none'; }catch(e){}
   if(n === 'setup'){
     const subEl = document.getElementById('hdr-sub');
     if(subEl) subEl.textContent = 'เลือกสนาม · ผู้เล่น · เกม';
